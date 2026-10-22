@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tìm trường - NS AI</title>
+<link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+<div class="stars"></div>
+
+<header class="topbar">
+<a class="brand" href="index.html"><span>NS</span> NS AI</a>
+<nav>
+<a href="index.html">Trang chủ</a>
+<a href="thongtin.html">Thông tin</a>
+<a href="diemso.html">Điểm số</a>
+<a href="sothich.html">Sở thích</a>
+<a href="tinhcach.html">Tính cách</a>
+<a href="muc-tieu.html">Mục tiêu</a>
+<a class="active" href="truong-hoc.html">Trường học</a>
+<a href="ketqua.html">Kết quả</a>
+<a href="chatbot.html">Chatbot</a>
+<button class="session-reset" onclick="resetAllData()">↻ Phiên mới</button>
+</nav>
+</header>
+
+<main class="page">
+<section class="glass form-card wide">
+<p class="eyebrow">NATIONAL UNIVERSITY SEARCH</p>
+<h1>🔎 Tìm trường trên toàn quốc</h1>
+<p class="muted">Tìm theo tên trường, tỉnh/thành hoặc ngành học. Bấm “Xem thông tin” để xem mô tả, ngành tiêu biểu và thông tin tuyển sinh.</p>
+
+<div id="profileHint" class="notice profile-hint"></div>
+
+<div class="search-row">
+<input id="q" placeholder="🔎 Tìm tên trường, tỉnh/thành hoặc ngành học...">
+<select id="area">
+<option value="">Tất cả tỉnh/thành</option>
+<option>Hà Nội</option><option>Hải Phòng</option><option>Huế</option><option>Đà Nẵng</option><option>TP. Hồ Chí Minh</option><option>Cần Thơ</option>
+<option>Cao Bằng</option><option>Tuyên Quang</option><option>Điện Biên</option><option>Lai Châu</option><option>Sơn La</option><option>Lào Cai</option>
+<option>Thái Nguyên</option><option>Lạng Sơn</option><option>Quảng Ninh</option><option>Bắc Ninh</option><option>Phú Thọ</option><option>Hưng Yên</option>
+<option>Ninh Bình</option><option>Thanh Hóa</option><option>Nghệ An</option><option>Hà Tĩnh</option><option>Quảng Trị</option><option>Quảng Ngãi</option>
+<option>Gia Lai</option><option>Khánh Hòa</option><option>Đắk Lắk</option><option>Lâm Đồng</option><option>Đồng Nai</option><option>Tây Ninh</option>
+<option>Đồng Tháp</option><option>Vĩnh Long</option><option>An Giang</option><option>Cà Mau</option>
+</select>
+</div>
+
+<div id="schools" class="school-grid"></div>
+</section>
+</main>
+
+<div id="schoolModal" class="modal-backdrop" hidden>
+  <div class="modal glass">
+    <button class="modal-close" onclick="closeSchool()">×</button>
+    <div id="schoolDetail"></div>
+  </div>
+</div>
+
+<script src="../JS/main.js"></script>
+<script>
+let data = [];
+
+const q = document.getElementById('q');
+const area = document.getElementById('area');
+const schools = document.getElementById('schools');
+const profileHint = document.getElementById('profileHint');
+
+fetch('../JS/data/truonghoc.json')
+  .then(r => r.json())
+  .then(x => { data = x; render(); updateProfileHint(); })
+  .catch(() => {
+    schools.innerHTML = '<div class="notice">Không đọc được dữ liệu trường.</div>';
+  });
+
+q.addEventListener('input', render);
+area.addEventListener('change', render);
+
+function updateProfileHint() {
+  const p = getProfile();
+  const goal = p.goals.selected?.length ? p.goals.selected.join(', ') : 'chưa chọn ngành';
+  profileHint.innerHTML =
+    `🎯 Hồ sơ hiện tại: ${p.info.province || 'chưa chọn tỉnh/thành'} · ${p.info.grade ? 'lớp '+p.info.grade : 'chưa chọn lớp'} · ngành quan tâm: ${goal}.`;
+}
+
+function render() {
+  if (!data.length) return;
+
+  const term = q.value.toLowerCase().trim();
+  const areaValue = area.value;
+
+  const arr = data.filter(s => {
+    const text = (s.name + ' ' + s.province + ' ' + s.majors.join(' ') + ' ' + (s.description || '')).toLowerCase();
+    return (!term || text.includes(term)) && (!areaValue || s.province === areaValue);
+  });
+
+  schools.innerHTML = arr.length
+    ? arr.map((s, i) => `
+      <article class="school-card">
+        <div class="school-logo">🏫</div>
+        <h3>${s.name}</h3>
+        <p>📍 ${s.province}</p>
+        <p>${s.description || ''}</p>
+        <p><b>Ngành tiêu biểu:</b> ${s.majors.join(', ')}</p>
+        <button class="btn small" onclick="showSchool(${data.indexOf(s)})">Xem thông tin</button>
+      </article>
+    `).join('')
+    : '<div class="notice">Không tìm thấy kết quả phù hợp.</div>';
+}
+
+function showSchool(index) {
+  const s = data[index];
+  const detail = document.getElementById('schoolDetail');
+
+  detail.innerHTML = `
+    <p class="eyebrow">SCHOOL PROFILE</p>
+    <h2>${s.name}</h2>
+    <p class="school-location">📍 ${s.province}</p>
+
+    <div class="detail-grid">
+      <div><b>📚 Ngành tiêu biểu</b><p>${s.majors.join(', ')}</p></div>
+      <div><b>ℹ️ Giới thiệu</b><p>${s.description || 'Chưa có mô tả.'}</p></div>
+      <div><b>🎓 Tuyển sinh</b><p>${s.admissionNote || 'Xem thông tin chính thức của trường.'}</p></div>
+      <div><b>💰 Học phí</b><p>${s.tuitionNote || 'Mức học phí thay đổi theo chương trình và từng năm.'}</p></div>
+    </div>
+
+    <div class="actions">
+      ${s.website ? `<a class="btn primary" href="${s.website}" target="_blank" rel="noopener">🌐 Website chính thức</a>` : ''}
+      <button class="btn secondary" onclick="closeSchool()">Đóng</button>
+    </div>
+
+    <p class="tiny">Thông tin tuyển sinh và học phí có thể thay đổi theo từng năm. Hãy kiểm tra thông báo chính thức của trường trước khi đưa ra quyết định.</p>
+  `;
+
+  document.getElementById('schoolModal').hidden = false;
+}
+
+function closeSchool() {
+  document.getElementById('schoolModal').hidden = true;
+}
+
+document.getElementById('schoolModal').addEventListener('click', e => {
+  if (e.target.id === 'schoolModal') closeSchool();
+});
+</script>
+</body>
+</html>
