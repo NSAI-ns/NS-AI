@@ -1,12 +1,438 @@
+
 <!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kết quả AI - NS AI</title><link rel="stylesheet" href="../CSS/style.css"></head><body><div class="stars"></div>
-<header class="topbar"><a class="brand" href="index.html"><span>NS</span> NS AI</a><nav>
-<a href="index.html">Trang chủ</a><a href="thongtin.html">Thông tin</a><a href="diemso.html">Điểm số</a><a href="sothich.html">Sở thích</a><a href="tinhcach.html">Tính cách</a><a href="muc-tieu.html">Mục tiêu</a><a href="truong-hoc.html">Trường học</a><a class="active" href="ketqua.html">Kết quả</a><a href="chatbot.html">Chatbot</a><button class="session-reset" onclick="resetAllData()">↻ Phiên mới</button></nav></header>
-<main class="page"><section class="glass form-card wide"><p class="eyebrow">NS AI ANALYSIS</p><h1>Kết quả định hướng</h1><p class="muted">Điểm phù hợp là chỉ số tham khảo được tính từ dữ liệu bạn đã nhập.</p>
-<div id="summary"></div><div id="results" class="result-list"></div>
-<div class="actions"><a class="btn secondary" href="truong-hoc.html">🏫 Tìm trường phù hợp</a><a class="btn primary" href="chatbot.html">🤖 Hỏi NS AI</a></div></section></main>
-<script src="../JS/main.js"></script><script src="../JS/phantich.js"></script><script>
-const r=analyzeCareer();document.getElementById('summary').innerHTML=`<div class="notice">📍 ${r.province||'Chưa chọn tỉnh'} · 🎯 ${r.goals.length?r.goals.join(', '):'Chưa xác định ngành'}</div>`;
-document.getElementById('results').innerHTML=r.results.map((x,i)=>`<div class="result-card"><div class="result-head"><b>${i+1}. ${x.name}</b><strong>${x.score}%</strong></div><div class="progress"><i style="width:${x.score}%"></i></div><p>${x.reason}</p></div>`).join('');
-</script></body></html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kết quả AI - NS AI</title>
+
+    <!-- CSS cùng thư mục -->
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<header class="topbar">
+
+    <a class="brand" href="index.html">
+        <span>NS</span> NS AI
+    </a>
+
+    <nav>
+        <a href="index.html">Trang chủ</a>
+        <a href="thongtin.html">Thông tin</a>
+        <a href="diemso.html">Điểm số</a>
+        <a href="sothich.html">Sở thích</a>
+        <a href="tinhcach.html">Tính cách</a>
+        <a href="muc-tieu.html">Mục tiêu</a>
+        <a href="truong-hoc.html">Trường học</a>
+        <a class="active" href="ketqua.html">Kết quả</a>
+        <a href="chatbot.html">Chatbot</a>
+
+        <button class="session-reset" onclick="resetAllData()">
+            ↻ Phiên mới
+        </button>
+    </nav>
+
+</header>
+
+
+<main class="page">
+
+    <section class="glass form-card wide">
+
+        <p class="eyebrow">NS CAREER FIT ANALYSIS</p>
+
+        <h1>Bạn phù hợp với ngành gì?</h1>
+
+        <p class="muted">
+            Dựa trên sự kết hợp giữa điểm số các môn học, sở thích và xu hướng tính cách của bạn, NS AI phân tích các ngành nghề bạn phù hợp nhất:
+        </p>
+
+
+        <!-- Thông tin tổng quan -->
+        <div id="summary"></div>
+
+
+        <!-- Kết quả ngành nghề -->
+        <div id="results" class="result-list"></div>
+
+
+        <!-- ĐÁNH GIÁ ĐIỂM MẠNH, ĐIỂM YẾU & NHỮNG ĐIỀU CẦN KHẮC PHỤC -->
+        <div id="swotSection" class="swot-section"></div>
+
+
+        <!-- GỢI Ý TRƯỜNG ĐẠI HỌC PHÙ HỢP THEO MỤC TIÊU & VÙNG MIỀN -->
+        <div id="schoolRecommendations" class="school-rec-section"></div>
+
+
+        <div class="actions">
+
+            <a class="btn secondary" href="truong-hoc.html">
+                🏫 Xem tất cả trường trên cả nước
+            </a>
+
+            <a class="btn primary" href="chatbot.html">
+                🤖 Hỏi NS AI về phương thức tuyển sinh
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- JS -->
+<script src="../JS/main.js"></script>
+<script src="../JS/data/truonghoc.js"></script>
+<script src="../JS/phantich.js"></script>
+
+<script>
+
+const r = analyzeCareer();
+const topCareer = r.results && r.results.length ? r.results[0] : null;
+const p = typeof getProfile === 'function' ? getProfile() : {};
+const allSchools = window.DEFAULT_SCHOOLS_DATA || [];
+const userProvince = r.province || '';
+
+// ==========================================
+// HÀM HỖ TRỢ XÁC ĐỊNH VÙNG MIỀN & TRƯỜNG PHÙ HỢP
+// ==========================================
+function getProvinceRegion(province) {
+    if (!province) return { name: 'Toàn quốc', hubs: ['Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng', 'Huế'] };
+    const p = province.toLowerCase();
+    
+    const central = [
+        'huế', 'thừa thiên huế', 'đà nẵng', 'quảng nam', 'quảng ngãi', 'bình định',
+        'phú yên', 'khánh hòa', 'ninh thuận', 'bình thuận', 'quảng trị', 'quảng bình',
+        'hà tĩnh', 'nghệ an', 'thanh hóa', 'kon tum', 'gia lai', 'đắk lắk', 'đắk nông', 'lâm đồng'
+    ];
+    const south = [
+        'tp. hồ chí minh', 'hồ chí minh', 'tphcm', 'sài gòn', 'bình dương', 'đồng nai',
+        'bà rịa - vũng tàu', 'long an', 'tiền giang', 'bến tre', 'trà vinh', 'vĩnh long',
+        'đồng tháp', 'an giang', 'kiên giang', 'cần thơ', 'hậu giang', 'sóc trăng',
+        'bạc liêu', 'cà mau', 'tây ninh', 'bình phước'
+    ];
+    const north = [
+        'hà nội', 'hải phòng', 'quảng ninh', 'bắc ninh', 'thái nguyên', 'nam định',
+        'phú thọ', 'hải dương', 'vĩnh phúc', 'hưng yên', 'hà nam', 'ninh bình',
+        'thái bình', 'bắc giang', 'lào cai', 'yên bái', 'điện biên', 'hòa bình',
+        'lai châu', 'sơn la', 'hà giang', 'cao bằng', 'bắc kạn', 'lạng sơn', 'tuyên quang'
+    ];
+
+    if (central.some(cp => p.includes(cp))) return { name: 'Miền Trung & Tây Nguyên', hubs: ['Huế', 'Đà Nẵng'] };
+    if (south.some(sp => p.includes(sp))) return { name: 'Miền Nam', hubs: ['TP. Hồ Chí Minh', 'Cần Thơ'] };
+    if (north.some(np => p.includes(np))) return { name: 'Miền Bắc', hubs: ['Hà Nội'] };
+    return { name: 'Toàn quốc', hubs: ['Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng', 'Huế'] };
+}
+
+const regionInfo = getProvinceRegion(userProvince);
+
+function matchMajorHighlight(majorName, targetCareer) {
+    if (!targetCareer) return false;
+    const c = (targetCareer.name || '').toLowerCase();
+    const m = (majorName || '').toLowerCase();
+    if (c.includes(m) || m.includes(c)) return true;
+    if ((c.includes('công nghệ') || c.includes('phần mềm') || c.includes('trí tuệ')) && (m.includes('công nghệ') || m.includes('máy tính') || m.includes('kỹ thuật') || m.includes('điện'))) return true;
+    if ((c.includes('kinh tế') || c.includes('quản trị') || c.includes('marketing') || c.includes('tài chính') || c.includes('logistics')) && (m.includes('kinh tế') || m.includes('quản trị') || m.includes('marketing') || m.includes('tài chính'))) return true;
+    if ((c.includes('y') || c.includes('dược') || c.includes('sức khỏe')) && (m.includes('y khoa') || m.includes('dược') || m.includes('điều dưỡng'))) return true;
+    if ((c.includes('sư phạm') || c.includes('giáo dục')) && (m.includes('sư phạm') || m.includes('ngữ văn') || m.includes('toán học'))) return true;
+    return false;
+}
+
+function getSchoolsForCareer(careerName, province, limit = 3) {
+    const all = window.DEFAULT_SCHOOLS_DATA || [];
+    const region = getProvinceRegion(province);
+    const uProv = (province || '').toLowerCase();
+    const cName = (careerName || '').toLowerCase();
+
+    const scored = all.map(sch => {
+        let score = 0;
+        const schProv = sch.province.toLowerCase();
+        const isDirectLocal = uProv && (schProv.includes(uProv) || uProv.includes(schProv));
+        const isRegionHub = region.hubs.some(h => schProv.includes(h.toLowerCase()));
+
+        if (isDirectLocal) score += 60;
+        else if (isRegionHub) score += 40;
+        else score += 15;
+
+        let hasMajor = false;
+        for (const m of sch.majors) {
+            if (matchMajorHighlight(m, { name: careerName })) {
+                score += 55;
+                hasMajor = true;
+                break;
+            }
+        }
+
+        if (sch.description.toLowerCase().includes(cName)) score += 15;
+
+        return {
+            ...sch,
+            score,
+            isDirectLocal,
+            isRegionHub,
+            hasMajor
+        };
+    });
+
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, limit);
+}
+
+// 1. RENDER THÔNG TIN TỔNG QUAN & BANNER
+const bannerTopSchools = topCareer ? getSchoolsForCareer(topCareer.name, userProvince, 3) : [];
+
+document.getElementById("summary").innerHTML = `
+    <div class="notice">
+        📍 <b>Khu vực:</b> ${r.province || "Chưa chọn tỉnh"}
+        ·
+        🎯 <b>Định hướng:</b> ${r.goalText || (r.goals && r.goals.length ? r.goals.join(", ") : "Khám phá ngành nghề")}
+        ${p.mbti ? ` · 🧠 <b>MBTI:</b> <span style="color:#c084fc;font-weight:700;">${p.mbti.type}</span> (${p.mbti.title})` : ''}
+    </div>
+
+    ${topCareer ? `
+        <div class="best-match-banner">
+            <div class="banner-title">🌟 KẾT QUẢ ĐÁNH GIÁ NỔI BẬT NHẤT:</div>
+            <h2>Bạn phù hợp nhất với ngành: <span>${topCareer.name}</span></h2>
+            
+            <div class="banner-schools">
+                <span>🏫 <strong>Gợi ý trường đào tạo ưu tiên:</strong></span>
+                ${bannerTopSchools.map(s => `
+                    <a href="${s.website || '#'}" target="_blank" rel="noopener" class="banner-school-tag">
+                        ${s.name} (${s.isDirectLocal ? '📍 Địa phương' : s.province})
+                    </a>
+                `).join('')}
+            </div>
+        </div>
+    ` : ''}
+`;
+
+
+// 2. RENDER TỪNG CARD NGÀNH - GỢI Ý TRƯỜNG NGAY TRONG TỪNG NGÀNH
+document.getElementById("results").innerHTML =
+    r.results.map((x, i) => {
+        const cardSchools = getSchoolsForCareer(x.name, userProvince, 3);
+
+        return `
+            <div class="result-card ${i === 0 ? 'top-card' : ''}">
+
+                <div class="result-head">
+
+                    <b>
+                        ${i + 1}. ${x.name}
+                    </b>
+
+                    <span class="fit-badge ${i === 0 ? 'top' : (i < 3 ? 'high' : 'good')}">
+                        ${x.fitLevel || (i === 0 ? '🌟 Phù hợp nhất' : (i < 3 ? '✨ Phù hợp rất cao' : '👍 Khá phù hợp'))}
+                    </span>
+
+                </div>
+
+                <p style="margin: 12px 0 10px;">
+                    ${x.reason}
+                </p>
+
+                ${x.combinations && x.combinations.length ? `
+                    <div class="combo-section">
+                        <div class="combo-label">
+                            📚 <b>Tổ hợp xét tuyển nên theo:</b>
+                        </div>
+                        <div class="combo-badges">
+                            ${x.combinations.map(c => `<span class="combo-badge">${c}</span>`).join('')}
+                        </div>
+                        ${x.advice ? `<div class="combo-advice">💡 <strong>Lời khuyên:</strong> ${x.advice}</div>` : ''}
+                    </div>
+                ` : ''}
+
+                <!-- GỢI Ý TRƯỜNG ĐÀO TẠO NGAY TẠI TỪNG NGÀNH NÀY -->
+                <div class="card-schools-section">
+                    <div class="card-schools-label">
+                        🏫 <b>Trường đại học đào tạo hàng đầu (theo ${userProvince ? userProvince + ' & khu vực' : 'toàn quốc'}):</b>
+                    </div>
+                    <div class="card-schools-list">
+                        ${cardSchools.map(s => `
+                            <div class="school-inline-item">
+                                <div class="school-inline-info">
+                                    <span class="school-inline-name">${s.name}</span>
+                                    <span class="location-tag ${s.isDirectLocal ? 'local' : ''}">
+                                        ${s.isDirectLocal ? '📍 Tại địa phương' : `📍 ${s.province}`}
+                                    </span>
+                                </div>
+                                ${s.website ? `
+                                    <a class="school-inline-link" href="${s.website}" target="_blank" rel="noopener">
+                                        Xem trường ↗
+                                    </a>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+            </div>
+        `;
+    }).join("");
+
+
+// 2.5 RENDER ĐÁNH GIÁ ĐIỂM MẠNH, ĐIỂM YẾU & NHỮNG ĐIỀU CẦN KHẮC PHỤC (SWOT)
+if (typeof evaluateProfileSWOT === 'function') {
+    const swot = evaluateProfileSWOT();
+    const swotEl = document.getElementById("swotSection");
+    if (swotEl) {
+        swotEl.innerHTML = `
+            <div class="swot-container">
+                <div class="swot-header">
+                    <h2>🔍 Đánh giá Điểm mạnh, Điểm yếu & Lộ trình Hoàn thiện Bản thân</h2>
+                    <p>
+                        Dựa trên dữ liệu điểm số, xu hướng tính cách [MBTI] và đam mê của bạn, NS AI phân tích đa chiều để giúp bạn phát huy tối đa tiềm năng và khắc phục các rủi ro:
+                    </p>
+                </div>
+
+                <div class="swot-grid">
+                    <!-- Cột Điểm Mạnh -->
+                    <div class="swot-column strength-col">
+                        <div class="swot-col-header">
+                            <span class="swot-badge strength">💪 ĐIỂM MẠNH BẢN THÂN</span>
+                            <span class="swot-count">${swot.strengths.length} thế mạnh</span>
+                        </div>
+                        <div class="swot-list">
+                            ${swot.strengths.map(s => `
+                                <div class="swot-item">
+                                    <div class="swot-item-title">${s.title}</div>
+                                    <div class="swot-item-desc">${s.desc}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Cột Điểm Yếu -->
+                    <div class="swot-column weakness-col">
+                        <div class="swot-col-header">
+                            <span class="swot-badge weakness">⚠️ ĐIỂM YẾU & RỦI RO</span>
+                            <span class="swot-count">${swot.weaknesses.length} điểm lưu tâm</span>
+                        </div>
+                        <div class="swot-list">
+                            ${swot.weaknesses.map(w => `
+                                <div class="swot-item">
+                                    <div class="swot-item-title">${w.title}</div>
+                                    <div class="swot-item-desc">${w.desc}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Cột Cần Khắc Phục -->
+                    <div class="swot-column improve-col">
+                        <div class="swot-col-header">
+                            <span class="swot-badge improve">🛠️ BẢN THÂN CẦN KHẮC PHỤC</span>
+                            <span class="swot-count">${swot.improvements.length} hành động</span>
+                        </div>
+                        <div class="swot-list">
+                            ${swot.improvements.map(im => `
+                                <div class="swot-item">
+                                    <div class="swot-item-title">${im.title}</div>
+                                    <div class="swot-item-desc">${im.desc}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+
+// 3. RENDER BẢNG TỔNG QUAN CHI TIẾT CÁC TRƯỜNG HÀNG ĐẦU DÀNH CHO BẠN
+const overallScored = allSchools.map(sch => {
+    let score = 0;
+    const schProv = sch.province.toLowerCase();
+    const uProv = userProvince.toLowerCase();
+    const isDirectLocal = uProv && (schProv.includes(uProv) || uProv.includes(schProv));
+    const isRegionHub = regionInfo.hubs.some(h => schProv.includes(h.toLowerCase()));
+
+    if (isDirectLocal) score += 60;
+    else if (isRegionHub) score += 40;
+    else score += 15;
+
+    let hasTargetMajor = false;
+    for (const m of sch.majors) {
+        if (matchMajorHighlight(m, topCareer)) {
+            score += 50;
+            hasTargetMajor = true;
+            break;
+        }
+    }
+
+    if (topCareer && sch.description.toLowerCase().includes(topCareer.name.toLowerCase())) {
+        score += 15;
+    }
+
+    return {
+        ...sch,
+        matchScore: score,
+        isDirectLocal,
+        isRegionHub,
+        hasTargetMajor
+    };
+});
+
+overallScored.sort((a, b) => b.matchScore - a.matchScore);
+const topOverallSchools = overallScored.slice(0, 3);
+
+if (topOverallSchools.length) {
+    document.getElementById("schoolRecommendations").innerHTML = `
+        <div class="school-rec-header">
+            <h2>🏫 Danh sách trường đại học tiêu biểu dành cho bạn</h2>
+            <p>
+                Tổng hợp các trường thế mạnh đào tạo ngành <strong>${topCareer ? topCareer.name : 'phù hợp nhất'}</strong> 
+                ưu tiên tại khu vực <strong>${userProvince || 'Toàn quốc'}</strong> (${regionInfo.name}):
+            </p>
+        </div>
+
+        <div class="school-rec-grid">
+            ${topOverallSchools.map(sch => `
+                <div class="school-rec-card ${sch.isDirectLocal ? 'primary-match' : ''}">
+                    <div>
+                        <div class="school-card-top">
+                            <div class="school-card-name">${sch.name}</div>
+                            <span class="location-tag ${sch.isDirectLocal ? 'local' : ''}">
+                                ${sch.isDirectLocal ? '📍 Tại địa phương' : `📍 ${sch.province}`}
+                            </span>
+                        </div>
+
+                        <div class="school-card-majors">
+                            ${sch.majors.map(m => `
+                                <span class="school-major-chip ${matchMajorHighlight(m, topCareer) ? 'highlight' : ''}">
+                                    ${m}
+                                </span>
+                            `).join('')}
+                        </div>
+
+                        <p class="school-card-desc">
+                            ${sch.description}
+                        </p>
+                    </div>
+
+                    <div class="school-card-footer">
+                        <span style="font-size: 12px; color: #94a3b8;">${sch.tuitionNote || 'Học phí theo quy định'}</span>
+                        ${sch.website ? `
+                            <a href="${sch.website}" target="_blank" rel="noopener">
+                                🌐 Website trường →
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+</script>
+
+</body>
+</html>
