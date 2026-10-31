@@ -28,14 +28,6 @@ function normalizeQuery(text) {
   s = s.replace(/truong/gi, 'trường');
   s = s.replace(/diem/gi, 'điểm');
 
-  // Chuẩn hóa điểm mạnh, điểm yếu & khắc phục
-  s = s.replace(/diem manh/gi, 'điểm mạnh');
-  s = s.replace(/diem yeu/gi, 'điểm yếu');
-  s = s.replace(/the manh/gi, 'thế mạnh');
-  s = s.replace(/khac phuc/gi, 'khắc phục');
-  s = s.replace(/nhuoc diem/gi, 'nhược điểm');
-  s = s.replace(/uu diem/gi, 'ưu điểm');
-
   // Chuẩn hóa động lực & cảm xúc học đường
   s = s.replace(/m[aấ]t đ[oộ]ng l[uự]c/gi, 'mất động lực');
   s = s.replace(/mat dong luc/gi, 'mất động lực');
@@ -595,37 +587,6 @@ function answer(q) {
       `📝 **3. Cuốn sổ tay "Lỗi sai":**\n` +
       `• Mỗi khi làm sai câu nào, hãy chép lại câu đó và ghi rõ: "Tại sao mình sai? Công thức đúng là gì?". Đọc lại cuốn sổ này trước mỗi bài kiểm tra sẽ giúp bạn không bao giờ mất điểm oan.\n\n` +
       `Bạn đang muốn cải thiện điểm của môn nào nhất lúc này?`;
-  }
-
-  // 3.5 ĐÁNH GIÁ ĐIỂM MẠNH, ĐIỂM YẾU BẢN THÂN & NHỮNG ĐIỀU CẦN KHẮC PHỤC (SWOT CÁ NHÂN HÓA)
-  if (/điểm mạnh|điểm yếu|thế mạnh.*hạn chế|ưu điểm.*nhược điểm|khắc phục|cần khắc phục|hoàn thiện bản thân|swot|bản thân em cần khắc phục|bản thân cần khắc phục|tự đánh giá bản thân/.test(s)) {
-    recordTopic('swot_evaluation');
-    const swot = (typeof evaluateProfileSWOT === 'function')
-      ? evaluateProfileSWOT()
-      : { strengths: [], weaknesses: [], improvements: [] };
-
-    let strList = swot.strengths.length
-      ? swot.strengths.map((st, i) => `${i + 1}. **${st.title}:** ${st.desc}`).join('\n\n')
-      : '• Bạn là người có ý thức tự giác và chủ động tìm kiếm định hướng tương lai từ sớm.';
-
-    let weakList = swot.weaknesses.length
-      ? swot.weaknesses.map((w, i) => `${i + 1}. **${w.title}:** ${w.desc}`).join('\n\n')
-      : '• Cần bổ sung thêm điểm số các môn học để hệ thống đo lường chính xác các rủi ro lệch khối thi.';
-
-    let impList = swot.improvements.length
-      ? swot.improvements.map((im, i) => `👉 **${im.title}:**\n   ${im.desc}`).join('\n\n')
-      : '👉 Hãy hoàn thiện các mục Điểm số, Tính cách và Sở thích để nhận lộ trình chi tiết nhất nhé!';
-
-    return `🔍 **BÁO CÁO PHÂN TÍCH ĐIỂM MẠNH, ĐIỂM YẾU & LỘ TRÌNH KHẮC PHỤC:**\n\n` +
-      `Dựa trên hồ sơ thực tế của bạn (${c.grade}, tại ${c.province}), NS AI phân tích đa chiều như sau:\n\n` +
-      `━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-      `💪 **I. ĐIỂM MẠNH NỔI BẬT CỦA BẠN (STRENGTHS):**\n\n${strList}\n\n` +
-      `━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-      `⚠️ **II. ĐIỂM YẾU & NGUY CƠ CẦN LƯU TÂM (WEAKNESSES):**\n\n${weakList}\n\n` +
-      `━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-      `🛠️ **III. NHỮNG ĐIỀU BẢN THÂN CẦN KHẮC PHỤC NGAY (ACTION PLAN):**\n\n${impList}\n\n` +
-      `💡 *Thông điệp từ NS AI:* "Biết rõ điểm mạnh để tự tin phát huy, nhận diện điểm yếu để có chiến lược phòng ngừa chính là con đường ngắn nhất giúp bạn bứt phá điểm thi và chọn đúng ngành đại học mơ ước!"\n\n` +
-      `Bạn muốn mình lên kế hoạch chi tiết hơn để cải thiện môn học nào hay rèn luyện kỹ năng nào trước? Kể cho mình nghe nhé! 😊`;
   }
 
   // 4. MỨC LƯƠNG / CƠ HỘI VIỆC LÀM / XIN VIỆC / XU HƯỚNG NGHỀ NGHIỆP

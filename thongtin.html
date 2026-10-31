@@ -1,236 +1,228 @@
-
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Thông tin - NS AI</title>
 
-<!-- ĐÃ SỬA ĐƯỜNG DẪN CSS -->
-<link rel="stylesheet" href="../CSS/style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thông tin - NS AI</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<div class="stars"></div>
-
-<header class="topbar">
-<a class="brand" href="index.html"><span>NS</span> NS AI</a>
-
-<nav>
-<a href="index.html">Trang chủ</a>
-<a class="active" href="thongtin.html">Thông tin</a>
-<a href="diemso.html">Điểm số</a>
-<a href="sothich.html">Sở thích</a>
-<a href="tinhcach.html">Tính cách</a>
-<a href="muc-tieu.html">Mục tiêu</a>
-<a href="truong-hoc.html">Trường học</a>
-<a href="ketqua.html">Kết quả</a>
-<a href="chatbot.html">Chatbot</a>
-<button class="session-reset" onclick="resetAllData()">↻ Phiên mới</button>
-</nav>
-</header>
-
-<main class="page">
-
-<section class="glass form-card">
-
-<p class="eyebrow">BƯỚC 1</p>
-
-<h1>Thông tin cơ bản</h1>
-
-<p class="muted">
-Không cần nhập họ tên. Các thông tin này giúp NS Career AI
-cá nhân hóa kết quả và chatbot.
-</p>
+    <div class="stars"></div>
+
+    <header class="topbar">
+        <a class="brand" href="../index.html"><span>NS</span> NS AI</a>
+
+        <nav>
+            <a href="../index.html">Trang chủ</a>
+            <a class="active" href="thongtin.html">Thông tin</a>
+            <a href="diemso.html">Điểm số</a>
+            <a href="sothich.html">Sở thích</a>
+            <a href="tinhcach.html">Tính cách</a>
+            <a href="muc-tieu.html">Mục tiêu</a>
+            <a href="truong-hoc.html">Trường học</a>
+            <a href="ketqua.html">Kết quả</a>
+            <a href="chatbot.html">Chatbot</a>
+            <button class="session-reset" onclick="resetAllData()">↻ Phiên mới</button>
+        </nav>
+    </header>
 
-<div class="info-box-grid">
+    <main class="page">
 
-<div class="info-box">
-<b>📍 Tỉnh/thành</b>
-<span>Giúp gợi ý trường đại học thuận tiện theo khu vực.</span>
-</div>
+        <section class="glass form-card">
 
-<div class="info-box">
-<b>🎓 Lớp</b>
-<span>Giúp đặt kết quả và lộ trình trong đúng bối cảnh học tập.</span>
-</div>
+            <p class="eyebrow">BƯỚC 1</p>
 
-</div>
+            <h1>Thông tin cơ bản</h1>
 
+            <p class="muted">
+                Không cần nhập họ tên. Các thông tin này giúp NS Career AI
+                cá nhân hóa kết quả và chatbot.
+            </p>
 
-<label>Tỉnh / Thành phố</label>
+            <div class="info-box-grid">
 
-<div class="province-search">
-<input
-id="provinceSearch"
-type="text"
-placeholder="🔎 Tìm tỉnh/thành phố..."
-autocomplete="off">
-</div>
+                <div class="info-box">
+                    <b>📍 Tỉnh/thành</b>
+                    <span>Giúp gợi ý trường đại học thuận tiện theo khu vực.</span>
+                </div>
 
-<select id="province">
+                <div class="info-box">
+                    <b>🎓 Lớp</b>
+                    <span>Giúp đặt kết quả và lộ trình trong đúng bối cảnh học tập.</span>
+                </div>
 
-<option value="">-- Chọn tỉnh/thành --</option>
+            </div>
 
-<option>Hà Nội</option>
-<option>Cao Bằng</option>
-<option>Tuyên Quang</option>
-<option>Điện Biên</option>
-<option>Lai Châu</option>
-<option>Sơn La</option>
-<option>Lào Cai</option>
-<option>Thái Nguyên</option>
-<option>Lạng Sơn</option>
-<option>Quảng Ninh</option>
-<option>Bắc Ninh</option>
-<option>Phú Thọ</option>
-<option>Hải Phòng</option>
-<option>Hưng Yên</option>
-<option>Ninh Bình</option>
-<option>Thanh Hóa</option>
-<option>Nghệ An</option>
-<option>Hà Tĩnh</option>
-<option>Quảng Trị</option>
-<option>Huế</option>
-<option>Đà Nẵng</option>
-<option>Quảng Ngãi</option>
-<option>Gia Lai</option>
-<option>Khánh Hòa</option>
-<option>Đắk Lắk</option>
-<option>Lâm Đồng</option>
-<option>Đồng Nai</option>
-<option>TP. Hồ Chí Minh</option>
-<option>Tây Ninh</option>
-<option>Đồng Tháp</option>
-<option>Vĩnh Long</option>
-<option>An Giang</option>
-<option>Cần Thơ</option>
-<option>Cà Mau</option>
 
-</select>
+            <label>Tỉnh / Thành phố</label>
 
+            <div class="province-search">
+                <input id="provinceSearch" type="text" placeholder="🔎 Tìm tỉnh/thành phố..." autocomplete="off">
+            </div>
 
-<label>Lớp
+            <select id="province">
 
-<select id="grade">
-<option>10</option>
-<option>11</option>
-<option>12</option>
-</select>
+                <option value="">-- Chọn tỉnh/thành --</option>
 
-</label>
+                <option>Hà Nội</option>
+                <option>Cao Bằng</option>
+                <option>Tuyên Quang</option>
+                <option>Điện Biên</option>
+                <option>Lai Châu</option>
+                <option>Sơn La</option>
+                <option>Lào Cai</option>
+                <option>Thái Nguyên</option>
+                <option>Lạng Sơn</option>
+                <option>Quảng Ninh</option>
+                <option>Bắc Ninh</option>
+                <option>Phú Thọ</option>
+                <option>Hải Phòng</option>
+                <option>Hưng Yên</option>
+                <option>Ninh Bình</option>
+                <option>Thanh Hóa</option>
+                <option>Nghệ An</option>
+                <option>Hà Tĩnh</option>
+                <option>Quảng Trị</option>
+                <option>Huế</option>
+                <option>Đà Nẵng</option>
+                <option>Quảng Ngãi</option>
+                <option>Gia Lai</option>
+                <option>Khánh Hòa</option>
+                <option>Đắk Lắk</option>
+                <option>Lâm Đồng</option>
+                <option>Đồng Nai</option>
+                <option>TP. Hồ Chí Minh</option>
+                <option>Tây Ninh</option>
+                <option>Đồng Tháp</option>
+                <option>Vĩnh Long</option>
+                <option>An Giang</option>
+                <option>Cần Thơ</option>
+                <option>Cà Mau</option>
 
+            </select>
 
-<div class="actions">
 
-<button
-class="btn primary"
-onclick="saveInfo()">
+            <label>Lớp
 
-Lưu & tiếp tục →
+                <select id="grade">
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                </select>
 
-</button>
+            </label>
 
-</div>
 
-</section>
+            <div class="actions">
 
-</main>
+                <button class="btn primary" onclick="saveInfo()">
 
+                    Lưu & tiếp tục →
 
-<!-- ĐÃ SỬA ĐƯỜNG DẪN JS -->
+                </button>
 
-<script src="../JS/main.js"></script>
+            </div>
 
+        </section>
 
-<script>
+    </main>
 
-// Tìm kiếm tỉnh/thành phố
-const provinceSearch = document.getElementById("provinceSearch");
-const provinceSelect = document.getElementById("province");
 
-const provinceOptions =
-Array.from(provinceSelect.options).map(option => ({
-    text: option.text,
-    value: option.value
-}));
+    <script src="main.js"></script>
 
-provinceSearch.addEventListener("input", function(){
 
-    const keyword = this.value
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+    <script>
 
-    provinceSelect.innerHTML = "";
+        // Tìm kiếm tỉnh/thành phố
+        const provinceSearch = document.getElementById("provinceSearch");
+        const provinceSelect = document.getElementById("province");
 
-    const filtered = provinceOptions.filter(province => {
+        const provinceOptions =
+            Array.from(provinceSelect.options).map(option => ({
+                text: option.text,
+                value: option.value
+            }));
 
-        const text = province.text
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "");
+        provinceSearch.addEventListener("input", function () {
 
-        return text.includes(keyword);
+            const keyword = this.value
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "");
 
-    });
+            provinceSelect.innerHTML = "";
 
-    filtered.forEach(province => {
+            const filtered = provinceOptions.filter(province => {
 
-        const option = document.createElement("option");
+                const text = province.text
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "");
 
-        option.value = province.value;
-        option.textContent = province.text;
+                return text.includes(keyword);
 
-        provinceSelect.appendChild(option);
+            });
 
-    });
+            filtered.forEach(province => {
 
-    if(filtered.length === 0){
+                const option = document.createElement("option");
 
-        const option = document.createElement("option");
+                option.value = province.value;
+                option.textContent = province.text;
 
-        option.textContent = "Không tìm thấy tỉnh/thành phố";
-        option.disabled = true;
+                provinceSelect.appendChild(option);
 
-        provinceSelect.appendChild(option);
+            });
 
-    }
+            if (filtered.length === 0) {
 
-});
+                const option = document.createElement("option");
 
+                option.textContent = "Không tìm thấy tỉnh/thành phố";
+                option.disabled = true;
 
-function saveInfo(){
+                provinceSelect.appendChild(option);
 
-    const data = {
+            }
 
-        province:
-        document.getElementById('province').value,
+        });
 
-        grade:
-        document.getElementById('grade').value
 
-    };
+        function saveInfo() {
 
-    if(!data.province){
+            const data = {
 
-        alert('Hãy chọn tỉnh/thành phố.');
+                province:
+                    document.getElementById('province').value,
 
-        return;
+                grade:
+                    document.getElementById('grade').value
 
-    }
+            };
 
-    save('info',data);
+            if (!data.province) {
 
-    location.href='diemso.html';
+                alert('Hãy chọn tỉnh/thành phố.');
 
-}
+                return;
 
+            }
 
-// Load dữ liệu đã lưu
-loadInfo();
+            save('info', data);
 
-</script>
+            location.href = 'diemso.html';
+
+        }
+
+
+        // Load dữ liệu đã lưu
+        loadInfo();
+
+    </script>
 
 </body>
+
 </html>

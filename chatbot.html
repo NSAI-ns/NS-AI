@@ -1,250 +1,227 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Trợ lí ảo - NS AI</title>
+    <title>Trợ lí ảo - NS AI</title>
 
-<!-- CSS -->
-<link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-<div class="stars"></div>
+    <div class="stars"></div>
 
 
-<header class="topbar">
+    <header class="topbar">
 
-    <a class="brand" href="index.html">
-        <span>NS</span> NS AI
-    </a>
+        <a class="brand" href="../index.html">
+            <span>NS</span> NS AI
+        </a>
 
-    <nav>
+        <nav>
 
-        <a href="index.html">Trang chủ</a>
+            <a href="../index.html">Trang chủ</a>
 
-        <a href="thongtin.html">Thông tin</a>
+            <a href="thongtin.html">Thông tin</a>
 
-        <a href="diemso.html">Điểm số</a>
+            <a href="diemso.html">Điểm số</a>
 
-        <a href="sothich.html">Sở thích</a>
+            <a href="sothich.html">Sở thích</a>
 
-        <a href="tinhcach.html">Tính cách</a>
+            <a href="tinhcach.html">Tính cách</a>
 
-        <a href="muc-tieu.html">Mục tiêu</a>
+            <a href="muc-tieu.html">Mục tiêu</a>
 
-        <a href="truong-hoc.html">Trường học</a>
+            <a href="truong-hoc.html">Trường học</a>
 
-        <a href="ketqua.html">Kết quả</a>
+            <a href="ketqua.html">Kết quả</a>
 
-        <a class="active" href="chatbot.html">Chatbot</a>
+            <a class="active" href="chatbot.html">Chatbot</a>
 
-        <button class="session-reset" onclick="resetAllData()">
-            ↻ Phiên mới
-        </button>
+            <button class="session-reset" onclick="resetAllData()">
+                ↻ Phiên mới
+            </button>
 
-    </nav>
+        </nav>
 
-</header>
-
-
-<main class="page">
-
-<section class="glass chat-card">
+    </header>
 
 
-    <!-- TIÊU ĐỀ CHATBOT -->
+    <main class="page">
 
-    <div class="chat-title">
+        <section class="glass chat-card">
 
-        <div class="bot-avatar">
-            NS
-        </div>
 
-        <div>
+            <!-- TIÊU ĐỀ CHATBOT -->
 
-            <h1>
-                NS AI Assistant
-            </h1>
+            <div class="chat-title">
 
-            <p>
-                Trợ lý định hướng & tư vấn tâm lý học đường – Lắng nghe bằng giọng nói và thấu cảm cảm xúc
+                <div class="bot-avatar">
+                    NS
+                </div>
+
+                <div>
+
+                    <h1>
+                        NS AI Assistant
+                    </h1>
+
+                    <p>
+                        Trợ lý định hướng & tư vấn tâm lý học đường – Lắng nghe bằng giọng nói và thấu cảm cảm xúc
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- HỒ SƠ -->
+
+            <div id="personalProfile" class="profile-mini"></div>
+
+
+            <!-- KHUNG TIN NHẮN -->
+
+            <div id="messages" class="messages">
+
+                <div class="msg bot">
+                    Chào bạn! Mình là NS AI – trợ lý định hướng và tư vấn tâm lý học đường. Mình luôn ở đây để lắng nghe
+                    bạn tâm sự về áp lực thi cử, chuyện gia đình, những ngày mệt mỏi hay băn khoăn về chọn ngành, chọn
+                    trường. Bạn có thể gõ phím hoặc bấm nút 🎙️ Micro để tâm sự trực tiếp bằng giọng nói nhé! 💚🌌
+                    <div class="msg-tools">
+                        <button type="button" class="btn-read-msg" title="Đọc bằng giọng nói"
+                            onclick="speakMessage(this)">🔊 Nghe đọc</button>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- CÂU HỎI NHANH -->
+
+            <div class="quick">
+
+                <button onclick="quick('Em bị mất động lực học tập, phải làm sao?')">
+                    ⚡ Lấy lại động lực
+                </button>
+
+                <button onclick="quick('Bạn có tài liệu học tập và đề thi có giải chi tiết không?')">
+                    📚 Tài liệu & Đề thi
+                </button>
+
+                <button onclick="quick('Làm sao để bớt lười và tập trung học?')">
+                    ⏱️ Cai lười & Trì hoãn
+                </button>
+
+                <button onclick="quick('Tôi muốn được lắng nghe và tư vấn tâm lý')">
+                    💚 Lắng nghe & Tâm sự
+                </button>
+
+                <button onclick="quick('Em đang bị áp lực từ bố mẹ và gia đình')">
+                    👨‍👩‍👧 Áp lực gia đình
+                </button>
+
+                <button onclick="quick('Hướng dẫn em bài tập thở 4-7-8 để thư giãn')">
+                    🧘 Bài tập thở 4-7-8
+                </button>
+
+                <button onclick="quick('Em cảm thấy buồn và mệt mỏi quá')">
+                    🫂 Tâm sự nỗi buồn
+                </button>
+
+                <button onclick="quick('Làm sao để nói chuyện bằng giọng nói với bạn?')">
+                    🎙️ Trò chuyện bằng giọng nói
+                </button>
+
+                <button onclick="quick('Ngành nào phù hợp với em?')">
+                    🎯 Ngành phù hợp
+                </button>
+
+                <button onclick="quick('Ngành này nên theo tổ hợp gì?')">
+                    📚 Tổ hợp môn nên theo
+                </button>
+
+                <button onclick="quick('Em sợ trượt đại học và điểm thi thấp')">
+                    📈 Sợ trượt & Điểm thấp
+                </button>
+
+                <button onclick="quick('Tìm trường phù hợp với em.')">
+                    🏫 Tìm trường
+                </button>
+
+                <button onclick="quick('Phân tích nhóm tính cách MBTI của em')">
+                    🧠 Tính cách [MBTI]
+                </button>
+
+            </div>
+
+
+            <!-- Ô NHẬP & TƯƠNG TÁC GIỌNG NÓI -->
+
+            <div class="chat-input">
+
+                <input id="input" placeholder="Nhập tâm sự hoặc bấm micro 🎙️ để nói..." autocomplete="off">
+
+                <button id="btnMic" class="btn-mic" type="button" onclick="toggleSpeechRecognition()"
+                    title="Bấm để nói (Lắng nghe bằng giọng nói)">
+                    🎙️
+                </button>
+
+                <button id="btnVoiceToggle" class="btn-voice-toggle" type="button" onclick="toggleAutoSpeak()"
+                    title="Bật/Tắt trợ lý đọc câu trả lời">
+                    🔇
+                </button>
+
+                <button class="btn primary" onclick="send()">
+                    Gửi
+                </button>
+
+            </div>
+
+            <!-- TRẠNG THÁI NHẬN DIỆN GIỌNG NÓI -->
+            <div id="voiceStatus" class="voice-status" style="display: none;"></div>
+
+
+            <p class="tiny">
+
+                Chatbot sử dụng dữ liệu bạn đã nhập trong NS Career AI
+                để cá nhân hóa câu trả lời.
+
+                Đây là công cụ hỗ trợ tham khảo, không thay thế chuyên gia
+                tâm lý hoặc tư vấn tuyển sinh chính thức.
+
             </p>
 
-        </div>
 
-    </div>
+        </section>
 
-
-    <!-- HỒ SƠ -->
-
-    <div id="personalProfile" class="profile-mini"></div>
+    </main>
 
 
-    <!-- KHUNG TIN NHẮN -->
+    <!-- JAVASCRIPT -->
 
-    <div id="messages" class="messages">
-
-        <div class="msg bot">
-            Chào bạn! Mình là NS AI – trợ lý định hướng và tư vấn tâm lý học đường. Mình luôn ở đây để lắng nghe bạn tâm sự về áp lực thi cử, chuyện gia đình, những ngày mệt mỏi hay băn khoăn về chọn ngành, chọn trường. Bạn có thể gõ phím hoặc bấm nút 🎙️ Micro để tâm sự trực tiếp bằng giọng nói nhé! 💚🌌
-            <div class="msg-tools">
-                <button type="button" class="btn-read-msg" title="Đọc bằng giọng nói" onclick="speakMessage(this)">🔊 Nghe đọc</button>
-            </div>
-        </div>
-
-    </div>
+    <script src="main.js"></script>
+    <script src="phantich.js"></script>
+    <script src="truonghoc.js"></script>
+    <script src="chatbot.js"></script>
 
 
-    <!-- CÂU HỎI NHANH -->
+    <script>
 
-    <div class="quick">
+        const p = getProfile();
 
-        <button onclick="quick('Đánh giá điểm mạnh, điểm yếu bản thân và những điều em cần khắc phục')">
-            🔍 Điểm mạnh & Điểm yếu
-        </button>
+        const analysis = analyzeCareer();
 
-        <button onclick="quick('Em bị mất động lực học tập, phải làm sao?')">
-            ⚡ Lấy lại động lực
-        </button>
-
-        <button onclick="quick('Bạn có tài liệu học tập và đề thi có giải chi tiết không?')">
-            📚 Tài liệu & Đề thi
-        </button>
-
-        <button onclick="quick('Làm sao để bớt lười và tập trung học?')">
-            ⏱️ Cai lười & Trì hoãn
-        </button>
-
-        <button onclick="quick('Tôi muốn được lắng nghe và tư vấn tâm lý')">
-            💚 Lắng nghe & Tâm sự
-        </button>
-
-        <button onclick="quick('Em đang bị áp lực từ bố mẹ và gia đình')">
-            👨‍👩‍👧 Áp lực gia đình
-        </button>
-
-        <button onclick="quick('Hướng dẫn em bài tập thở 4-7-8 để thư giãn')">
-            🧘 Bài tập thở 4-7-8
-        </button>
-
-        <button onclick="quick('Em cảm thấy buồn và mệt mỏi quá')">
-            🫂 Tâm sự nỗi buồn
-        </button>
-
-        <button onclick="quick('Làm sao để nói chuyện bằng giọng nói với bạn?')">
-            🎙️ Trò chuyện bằng giọng nói
-        </button>
-
-        <button onclick="quick('Ngành nào phù hợp với em?')">
-            🎯 Ngành phù hợp
-        </button>
-
-        <button onclick="quick('Ngành này nên theo tổ hợp gì?')">
-            📚 Tổ hợp môn nên theo
-        </button>
-
-        <button onclick="quick('Em sợ trượt đại học và điểm thi thấp')">
-            📈 Sợ trượt & Điểm thấp
-        </button>
-
-        <button onclick="quick('Tìm trường phù hợp với em.')">
-            🏫 Tìm trường
-        </button>
-
-        <button onclick="quick('Phân tích nhóm tính cách MBTI của em')">
-            🧠 Tính cách [MBTI]
-        </button>
-
-    </div>
+        const top = analysis.results && analysis.results.length
+            ? analysis.results[0]
+            : null;
 
 
-    <!-- Ô NHẬP & TƯƠNG TÁC GIỌNG NÓI -->
-
-    <div class="chat-input">
-
-        <input
-            id="input"
-            placeholder="Nhập tâm sự hoặc bấm micro 🎙️ để nói..."
-            autocomplete="off"
-        >
-
-        <button
-            id="btnMic"
-            class="btn-mic"
-            type="button"
-            onclick="toggleSpeechRecognition()"
-            title="Bấm để nói (Lắng nghe bằng giọng nói)"
-        >
-            🎙️
-        </button>
-
-        <button
-            id="btnVoiceToggle"
-            class="btn-voice-toggle"
-            type="button"
-            onclick="toggleAutoSpeak()"
-            title="Bật/Tắt trợ lý đọc câu trả lời"
-        >
-            🔇
-        </button>
-
-        <button
-            class="btn primary"
-            onclick="send()"
-        >
-            Gửi
-        </button>
-
-    </div>
-
-    <!-- TRẠNG THÁI NHẬN DIỆN GIỌNG NÓI -->
-    <div id="voiceStatus" class="voice-status" style="display: none;"></div>
-
-
-    <p class="tiny">
-
-        Chatbot sử dụng dữ liệu bạn đã nhập trong NS Career AI
-        để cá nhân hóa câu trả lời.
-
-        Đây là công cụ hỗ trợ tham khảo, không thay thế chuyên gia
-        tâm lý hoặc tư vấn tuyển sinh chính thức.
-
-    </p>
-
-
-</section>
-
-</main>
-
-
-<!-- JAVASCRIPT -->
-
-<script src="../JS/main.js"></script>
-
-<script src="../JS/phantich.js"></script>
-
-<script src="../JS/data/truonghoc.js"></script>
-
-<script src="../JS/chatbot.js"></script>
-
-
-<script>
-
-const p = getProfile();
-
-const analysis = analyzeCareer();
-
-const top = analysis.results && analysis.results.length
-    ? analysis.results[0]
-    : null;
-
-
-document.getElementById("personalProfile").innerHTML = `
+        document.getElementById("personalProfile").innerHTML = `
 
     <b>Hồ sơ đang dùng:</b>
 
@@ -252,37 +229,35 @@ document.getElementById("personalProfile").innerHTML = `
 
     ·
 
-    ${
-        p.info.grade
-        ? "Lớp " + p.info.grade
-        : "Chưa chọn lớp"
-    }
+    ${p.info.grade
+                ? "Lớp " + p.info.grade
+                : "Chưa chọn lớp"
+            }
 
     ·
 
-    ${
-        p.scoreCount
-        ? p.scoreCount + " môn đã nhập"
-        : "Chưa nhập điểm"
-    }
+    ${p.scoreCount
+                ? p.scoreCount + " môn đã nhập"
+                : "Chưa nhập điểm"
+            }
 
     ·
 
     xu hướng ${p.personality || "chưa xác định"}.
 
-    ${
-        top
-        ? `
+    ${top
+                ? `
             Bạn phù hợp nhất với ngành:
             <strong>${top.name}</strong>.
           `
-        : ""
-    }
+                : ""
+            }
 
 `;
 
-</script>
+    </script>
 
 
 </body>
+
 </html>

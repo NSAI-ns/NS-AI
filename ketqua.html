@@ -1,193 +1,189 @@
-
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Kết quả AI - NS AI</title>
 
-    <!-- CSS cùng thư mục -->
-    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="stars"></div>
+    <div class="stars"></div>
 
-<header class="topbar">
+    <header class="topbar">
 
-    <a class="brand" href="index.html">
-        <span>NS</span> NS AI
-    </a>
+        <a class="brand" href="../index.html">
+            <span>NS</span> NS AI
+        </a>
 
-    <nav>
-        <a href="index.html">Trang chủ</a>
-        <a href="thongtin.html">Thông tin</a>
-        <a href="diemso.html">Điểm số</a>
-        <a href="sothich.html">Sở thích</a>
-        <a href="tinhcach.html">Tính cách</a>
-        <a href="muc-tieu.html">Mục tiêu</a>
-        <a href="truong-hoc.html">Trường học</a>
-        <a class="active" href="ketqua.html">Kết quả</a>
-        <a href="chatbot.html">Chatbot</a>
+        <nav>
+            <a href="../index.html">Trang chủ</a>
+            <a href="thongtin.html">Thông tin</a>
+            <a href="diemso.html">Điểm số</a>
+            <a href="sothich.html">Sở thích</a>
+            <a href="tinhcach.html">Tính cách</a>
+            <a href="muc-tieu.html">Mục tiêu</a>
+            <a href="truong-hoc.html">Trường học</a>
+            <a class="active" href="ketqua.html">Kết quả</a>
+            <a href="chatbot.html">Chatbot</a>
 
-        <button class="session-reset" onclick="resetAllData()">
-            ↻ Phiên mới
-        </button>
-    </nav>
+            <button class="session-reset" onclick="resetAllData()">
+                ↻ Phiên mới
+            </button>
+        </nav>
 
-</header>
-
-
-<main class="page">
-
-    <section class="glass form-card wide">
-
-        <p class="eyebrow">NS CAREER FIT ANALYSIS</p>
-
-        <h1>Bạn phù hợp với ngành gì?</h1>
-
-        <p class="muted">
-            Dựa trên sự kết hợp giữa điểm số các môn học, sở thích và xu hướng tính cách của bạn, NS AI phân tích các ngành nghề bạn phù hợp nhất:
-        </p>
+    </header>
 
 
-        <!-- Thông tin tổng quan -->
-        <div id="summary"></div>
+    <main class="page">
+
+        <section class="glass form-card wide">
+
+            <p class="eyebrow">NS CAREER FIT ANALYSIS</p>
+
+            <h1>Bạn phù hợp với ngành gì?</h1>
+
+            <p class="muted">
+                Dựa trên sự kết hợp giữa điểm số các môn học, sở thích và xu hướng tính cách của bạn, NS AI phân tích
+                các ngành nghề bạn phù hợp nhất:
+            </p>
 
 
-        <!-- Kết quả ngành nghề -->
-        <div id="results" class="result-list"></div>
+            <!-- Thông tin tổng quan -->
+            <div id="summary"></div>
 
 
-        <!-- ĐÁNH GIÁ ĐIỂM MẠNH, ĐIỂM YẾU & NHỮNG ĐIỀU CẦN KHẮC PHỤC -->
-        <div id="swotSection" class="swot-section"></div>
+            <!-- Kết quả ngành nghề -->
+            <div id="results" class="result-list"></div>
 
 
-        <!-- GỢI Ý TRƯỜNG ĐẠI HỌC PHÙ HỢP THEO MỤC TIÊU & VÙNG MIỀN -->
-        <div id="schoolRecommendations" class="school-rec-section"></div>
+            <!-- GỢI Ý TRƯỜNG ĐẠI HỌC PHÙ HỢP THEO MỤC TIÊU & VÙNG MIỀN -->
+            <div id="schoolRecommendations" class="school-rec-section"></div>
 
 
-        <div class="actions">
+            <div class="actions">
 
-            <a class="btn secondary" href="truong-hoc.html">
-                🏫 Xem tất cả trường trên cả nước
-            </a>
+                <a class="btn secondary" href="truong-hoc.html">
+                    🏫 Xem tất cả trường trên cả nước
+                </a>
 
-            <a class="btn primary" href="chatbot.html">
-                🤖 Hỏi NS AI về phương thức tuyển sinh
-            </a>
+                <a class="btn primary" href="chatbot.html">
+                    🤖 Hỏi NS AI về phương thức tuyển sinh
+                </a>
 
-        </div>
+            </div>
 
-    </section>
+        </section>
 
-</main>
+    </main>
 
 
-<!-- JS -->
-<script src="../JS/main.js"></script>
-<script src="../JS/data/truonghoc.js"></script>
-<script src="../JS/phantich.js"></script>
+    <!-- JS -->
+    <script src="main.js"></script>
+    <script src="truonghoc.js"></script>
+    <script src="phantich.js"></script>
 
-<script>
+    <script>
 
-const r = analyzeCareer();
-const topCareer = r.results && r.results.length ? r.results[0] : null;
-const p = typeof getProfile === 'function' ? getProfile() : {};
-const allSchools = window.DEFAULT_SCHOOLS_DATA || [];
-const userProvince = r.province || '';
+        const r = analyzeCareer();
+        const topCareer = r.results && r.results.length ? r.results[0] : null;
+        const p = typeof getProfile === 'function' ? getProfile() : {};
+        const allSchools = window.DEFAULT_SCHOOLS_DATA || [];
+        const userProvince = r.province || '';
 
-// ==========================================
-// HÀM HỖ TRỢ XÁC ĐỊNH VÙNG MIỀN & TRƯỜNG PHÙ HỢP
-// ==========================================
-function getProvinceRegion(province) {
-    if (!province) return { name: 'Toàn quốc', hubs: ['Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng', 'Huế'] };
-    const p = province.toLowerCase();
-    
-    const central = [
-        'huế', 'thừa thiên huế', 'đà nẵng', 'quảng nam', 'quảng ngãi', 'bình định',
-        'phú yên', 'khánh hòa', 'ninh thuận', 'bình thuận', 'quảng trị', 'quảng bình',
-        'hà tĩnh', 'nghệ an', 'thanh hóa', 'kon tum', 'gia lai', 'đắk lắk', 'đắk nông', 'lâm đồng'
-    ];
-    const south = [
-        'tp. hồ chí minh', 'hồ chí minh', 'tphcm', 'sài gòn', 'bình dương', 'đồng nai',
-        'bà rịa - vũng tàu', 'long an', 'tiền giang', 'bến tre', 'trà vinh', 'vĩnh long',
-        'đồng tháp', 'an giang', 'kiên giang', 'cần thơ', 'hậu giang', 'sóc trăng',
-        'bạc liêu', 'cà mau', 'tây ninh', 'bình phước'
-    ];
-    const north = [
-        'hà nội', 'hải phòng', 'quảng ninh', 'bắc ninh', 'thái nguyên', 'nam định',
-        'phú thọ', 'hải dương', 'vĩnh phúc', 'hưng yên', 'hà nam', 'ninh bình',
-        'thái bình', 'bắc giang', 'lào cai', 'yên bái', 'điện biên', 'hòa bình',
-        'lai châu', 'sơn la', 'hà giang', 'cao bằng', 'bắc kạn', 'lạng sơn', 'tuyên quang'
-    ];
+        // ==========================================
+        // HÀM HỖ TRỢ XÁC ĐỊNH VÙNG MIỀN & TRƯỜNG PHÙ HỢP
+        // ==========================================
+        function getProvinceRegion(province) {
+            if (!province) return { name: 'Toàn quốc', hubs: ['Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng', 'Huế'] };
+            const p = province.toLowerCase();
 
-    if (central.some(cp => p.includes(cp))) return { name: 'Miền Trung & Tây Nguyên', hubs: ['Huế', 'Đà Nẵng'] };
-    if (south.some(sp => p.includes(sp))) return { name: 'Miền Nam', hubs: ['TP. Hồ Chí Minh', 'Cần Thơ'] };
-    if (north.some(np => p.includes(np))) return { name: 'Miền Bắc', hubs: ['Hà Nội'] };
-    return { name: 'Toàn quốc', hubs: ['Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng', 'Huế'] };
-}
+            const central = [
+                'huế', 'thừa thiên huế', 'đà nẵng', 'quảng nam', 'quảng ngãi', 'bình định',
+                'phú yên', 'khánh hòa', 'ninh thuận', 'bình thuận', 'quảng trị', 'quảng bình',
+                'hà tĩnh', 'nghệ an', 'thanh hóa', 'kon tum', 'gia lai', 'đắk lắk', 'đắk nông', 'lâm đồng'
+            ];
+            const south = [
+                'tp. hồ chí minh', 'hồ chí minh', 'tphcm', 'sài gòn', 'bình dương', 'đồng nai',
+                'bà rịa - vũng tàu', 'long an', 'tiền giang', 'bến tre', 'trà vinh', 'vĩnh long',
+                'đồng tháp', 'an giang', 'kiên giang', 'cần thơ', 'hậu giang', 'sóc trăng',
+                'bạc liêu', 'cà mau', 'tây ninh', 'bình phước'
+            ];
+            const north = [
+                'hà nội', 'hải phòng', 'quảng ninh', 'bắc ninh', 'thái nguyên', 'nam định',
+                'phú thọ', 'hải dương', 'vĩnh phúc', 'hưng yên', 'hà nam', 'ninh bình',
+                'thái bình', 'bắc giang', 'lào cai', 'yên bái', 'điện biên', 'hòa bình',
+                'lai châu', 'sơn la', 'hà giang', 'cao bằng', 'bắc kạn', 'lạng sơn', 'tuyên quang'
+            ];
 
-const regionInfo = getProvinceRegion(userProvince);
-
-function matchMajorHighlight(majorName, targetCareer) {
-    if (!targetCareer) return false;
-    const c = (targetCareer.name || '').toLowerCase();
-    const m = (majorName || '').toLowerCase();
-    if (c.includes(m) || m.includes(c)) return true;
-    if ((c.includes('công nghệ') || c.includes('phần mềm') || c.includes('trí tuệ')) && (m.includes('công nghệ') || m.includes('máy tính') || m.includes('kỹ thuật') || m.includes('điện'))) return true;
-    if ((c.includes('kinh tế') || c.includes('quản trị') || c.includes('marketing') || c.includes('tài chính') || c.includes('logistics')) && (m.includes('kinh tế') || m.includes('quản trị') || m.includes('marketing') || m.includes('tài chính'))) return true;
-    if ((c.includes('y') || c.includes('dược') || c.includes('sức khỏe')) && (m.includes('y khoa') || m.includes('dược') || m.includes('điều dưỡng'))) return true;
-    if ((c.includes('sư phạm') || c.includes('giáo dục')) && (m.includes('sư phạm') || m.includes('ngữ văn') || m.includes('toán học'))) return true;
-    return false;
-}
-
-function getSchoolsForCareer(careerName, province, limit = 3) {
-    const all = window.DEFAULT_SCHOOLS_DATA || [];
-    const region = getProvinceRegion(province);
-    const uProv = (province || '').toLowerCase();
-    const cName = (careerName || '').toLowerCase();
-
-    const scored = all.map(sch => {
-        let score = 0;
-        const schProv = sch.province.toLowerCase();
-        const isDirectLocal = uProv && (schProv.includes(uProv) || uProv.includes(schProv));
-        const isRegionHub = region.hubs.some(h => schProv.includes(h.toLowerCase()));
-
-        if (isDirectLocal) score += 60;
-        else if (isRegionHub) score += 40;
-        else score += 15;
-
-        let hasMajor = false;
-        for (const m of sch.majors) {
-            if (matchMajorHighlight(m, { name: careerName })) {
-                score += 55;
-                hasMajor = true;
-                break;
-            }
+            if (central.some(cp => p.includes(cp))) return { name: 'Miền Trung & Tây Nguyên', hubs: ['Huế', 'Đà Nẵng'] };
+            if (south.some(sp => p.includes(sp))) return { name: 'Miền Nam', hubs: ['TP. Hồ Chí Minh', 'Cần Thơ'] };
+            if (north.some(np => p.includes(np))) return { name: 'Miền Bắc', hubs: ['Hà Nội'] };
+            return { name: 'Toàn quốc', hubs: ['Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng', 'Huế'] };
         }
 
-        if (sch.description.toLowerCase().includes(cName)) score += 15;
+        const regionInfo = getProvinceRegion(userProvince);
 
-        return {
-            ...sch,
-            score,
-            isDirectLocal,
-            isRegionHub,
-            hasMajor
-        };
-    });
+        function matchMajorHighlight(majorName, targetCareer) {
+            if (!targetCareer) return false;
+            const c = (targetCareer.name || '').toLowerCase();
+            const m = (majorName || '').toLowerCase();
+            if (c.includes(m) || m.includes(c)) return true;
+            if ((c.includes('công nghệ') || c.includes('phần mềm') || c.includes('trí tuệ')) && (m.includes('công nghệ') || m.includes('máy tính') || m.includes('kỹ thuật') || m.includes('điện'))) return true;
+            if ((c.includes('kinh tế') || c.includes('quản trị') || c.includes('marketing') || c.includes('tài chính') || c.includes('logistics')) && (m.includes('kinh tế') || m.includes('quản trị') || m.includes('marketing') || m.includes('tài chính'))) return true;
+            if ((c.includes('y') || c.includes('dược') || c.includes('sức khỏe')) && (m.includes('y khoa') || m.includes('dược') || m.includes('điều dưỡng'))) return true;
+            if ((c.includes('sư phạm') || c.includes('giáo dục')) && (m.includes('sư phạm') || m.includes('ngữ văn') || m.includes('toán học'))) return true;
+            return false;
+        }
 
-    scored.sort((a, b) => b.score - a.score);
-    return scored.slice(0, limit);
-}
+        function getSchoolsForCareer(careerName, province, limit = 3) {
+            const all = window.DEFAULT_SCHOOLS_DATA || [];
+            const region = getProvinceRegion(province);
+            const uProv = (province || '').toLowerCase();
+            const cName = (careerName || '').toLowerCase();
 
-// 1. RENDER THÔNG TIN TỔNG QUAN & BANNER
-const bannerTopSchools = topCareer ? getSchoolsForCareer(topCareer.name, userProvince, 3) : [];
+            const scored = all.map(sch => {
+                let score = 0;
+                const schProv = sch.province.toLowerCase();
+                const isDirectLocal = uProv && (schProv.includes(uProv) || uProv.includes(schProv));
+                const isRegionHub = region.hubs.some(h => schProv.includes(h.toLowerCase()));
 
-document.getElementById("summary").innerHTML = `
+                if (isDirectLocal) score += 60;
+                else if (isRegionHub) score += 40;
+                else score += 15;
+
+                let hasMajor = false;
+                for (const m of sch.majors) {
+                    if (matchMajorHighlight(m, { name: careerName })) {
+                        score += 55;
+                        hasMajor = true;
+                        break;
+                    }
+                }
+
+                if (sch.description.toLowerCase().includes(cName)) score += 15;
+
+                return {
+                    ...sch,
+                    score,
+                    isDirectLocal,
+                    isRegionHub,
+                    hasMajor
+                };
+            });
+
+            scored.sort((a, b) => b.score - a.score);
+            return scored.slice(0, limit);
+        }
+
+        // 1. RENDER THÔNG TIN TỔNG QUAN & BANNER
+        const bannerTopSchools = topCareer ? getSchoolsForCareer(topCareer.name, userProvince, 3) : [];
+
+        document.getElementById("summary").innerHTML = `
     <div class="notice">
         📍 <b>Khu vực:</b> ${r.province || "Chưa chọn tỉnh"}
         ·
@@ -213,12 +209,12 @@ document.getElementById("summary").innerHTML = `
 `;
 
 
-// 2. RENDER TỪNG CARD NGÀNH - GỢI Ý TRƯỜNG NGAY TRONG TỪNG NGÀNH
-document.getElementById("results").innerHTML =
-    r.results.map((x, i) => {
-        const cardSchools = getSchoolsForCareer(x.name, userProvince, 3);
+        // 2. RENDER TỪNG CARD NGÀNH - GỢI Ý TRƯỜNG NGAY TRONG TỪNG NGÀNH
+        document.getElementById("results").innerHTML =
+            r.results.map((x, i) => {
+                const cardSchools = getSchoolsForCareer(x.name, userProvince, 3);
 
-        return `
+                return `
             <div class="result-card ${i === 0 ? 'top-card' : ''}">
 
                 <div class="result-head">
@@ -275,117 +271,48 @@ document.getElementById("results").innerHTML =
 
             </div>
         `;
-    }).join("");
+            }).join("");
 
 
-// 2.5 RENDER ĐÁNH GIÁ ĐIỂM MẠNH, ĐIỂM YẾU & NHỮNG ĐIỀU CẦN KHẮC PHỤC (SWOT)
-if (typeof evaluateProfileSWOT === 'function') {
-    const swot = evaluateProfileSWOT();
-    const swotEl = document.getElementById("swotSection");
-    if (swotEl) {
-        swotEl.innerHTML = `
-            <div class="swot-container">
-                <div class="swot-header">
-                    <h2>🔍 Đánh giá Điểm mạnh, Điểm yếu & Lộ trình Hoàn thiện Bản thân</h2>
-                    <p>
-                        Dựa trên dữ liệu điểm số, xu hướng tính cách [MBTI] và đam mê của bạn, NS AI phân tích đa chiều để giúp bạn phát huy tối đa tiềm năng và khắc phục các rủi ro:
-                    </p>
-                </div>
+        // 3. RENDER BẢNG TỔNG QUAN CHI TIẾT CÁC TRƯỜNG HÀNG ĐẦU DÀNH CHO BẠN
+        const overallScored = allSchools.map(sch => {
+            let score = 0;
+            const schProv = sch.province.toLowerCase();
+            const uProv = userProvince.toLowerCase();
+            const isDirectLocal = uProv && (schProv.includes(uProv) || uProv.includes(schProv));
+            const isRegionHub = regionInfo.hubs.some(h => schProv.includes(h.toLowerCase()));
 
-                <div class="swot-grid">
-                    <!-- Cột Điểm Mạnh -->
-                    <div class="swot-column strength-col">
-                        <div class="swot-col-header">
-                            <span class="swot-badge strength">💪 ĐIỂM MẠNH BẢN THÂN</span>
-                            <span class="swot-count">${swot.strengths.length} thế mạnh</span>
-                        </div>
-                        <div class="swot-list">
-                            ${swot.strengths.map(s => `
-                                <div class="swot-item">
-                                    <div class="swot-item-title">${s.title}</div>
-                                    <div class="swot-item-desc">${s.desc}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
+            if (isDirectLocal) score += 60;
+            else if (isRegionHub) score += 40;
+            else score += 15;
 
-                    <!-- Cột Điểm Yếu -->
-                    <div class="swot-column weakness-col">
-                        <div class="swot-col-header">
-                            <span class="swot-badge weakness">⚠️ ĐIỂM YẾU & RỦI RO</span>
-                            <span class="swot-count">${swot.weaknesses.length} điểm lưu tâm</span>
-                        </div>
-                        <div class="swot-list">
-                            ${swot.weaknesses.map(w => `
-                                <div class="swot-item">
-                                    <div class="swot-item-title">${w.title}</div>
-                                    <div class="swot-item-desc">${w.desc}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
+            let hasTargetMajor = false;
+            for (const m of sch.majors) {
+                if (matchMajorHighlight(m, topCareer)) {
+                    score += 50;
+                    hasTargetMajor = true;
+                    break;
+                }
+            }
 
-                    <!-- Cột Cần Khắc Phục -->
-                    <div class="swot-column improve-col">
-                        <div class="swot-col-header">
-                            <span class="swot-badge improve">🛠️ BẢN THÂN CẦN KHẮC PHỤC</span>
-                            <span class="swot-count">${swot.improvements.length} hành động</span>
-                        </div>
-                        <div class="swot-list">
-                            ${swot.improvements.map(im => `
-                                <div class="swot-item">
-                                    <div class="swot-item-title">${im.title}</div>
-                                    <div class="swot-item-desc">${im.desc}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-}
+            if (topCareer && sch.description.toLowerCase().includes(topCareer.name.toLowerCase())) {
+                score += 15;
+            }
 
+            return {
+                ...sch,
+                matchScore: score,
+                isDirectLocal,
+                isRegionHub,
+                hasTargetMajor
+            };
+        });
 
-// 3. RENDER BẢNG TỔNG QUAN CHI TIẾT CÁC TRƯỜNG HÀNG ĐẦU DÀNH CHO BẠN
-const overallScored = allSchools.map(sch => {
-    let score = 0;
-    const schProv = sch.province.toLowerCase();
-    const uProv = userProvince.toLowerCase();
-    const isDirectLocal = uProv && (schProv.includes(uProv) || uProv.includes(schProv));
-    const isRegionHub = regionInfo.hubs.some(h => schProv.includes(h.toLowerCase()));
+        overallScored.sort((a, b) => b.matchScore - a.matchScore);
+        const topOverallSchools = overallScored.slice(0, 3);
 
-    if (isDirectLocal) score += 60;
-    else if (isRegionHub) score += 40;
-    else score += 15;
-
-    let hasTargetMajor = false;
-    for (const m of sch.majors) {
-        if (matchMajorHighlight(m, topCareer)) {
-            score += 50;
-            hasTargetMajor = true;
-            break;
-        }
-    }
-
-    if (topCareer && sch.description.toLowerCase().includes(topCareer.name.toLowerCase())) {
-        score += 15;
-    }
-
-    return {
-        ...sch,
-        matchScore: score,
-        isDirectLocal,
-        isRegionHub,
-        hasTargetMajor
-    };
-});
-
-overallScored.sort((a, b) => b.matchScore - a.matchScore);
-const topOverallSchools = overallScored.slice(0, 3);
-
-if (topOverallSchools.length) {
-    document.getElementById("schoolRecommendations").innerHTML = `
+        if (topOverallSchools.length) {
+            document.getElementById("schoolRecommendations").innerHTML = `
         <div class="school-rec-header">
             <h2>🏫 Danh sách trường đại học tiêu biểu dành cho bạn</h2>
             <p>
@@ -430,9 +357,10 @@ if (topOverallSchools.length) {
             `).join('')}
         </div>
     `;
-}
+        }
 
-</script>
+    </script>
 
 </body>
+
 </html>
