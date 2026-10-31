@@ -1,199 +1,197 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Khám phá tính cách - NS AI</title>
+<title>Khám phá tính cách - NS AI</title>
 
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="stars"></div>
+<div class="stars"></div>
 
-  <header class="topbar">
-    <a class="brand" href="../index.html">
-      <span>NS</span> NS AI
-    </a>
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span>NS</span> NS AI
+  </a>
 
-    <nav>
-      <a href="../index.html">Trang chủ</a>
-      <a href="thongtin.html">Thông tin</a>
-      <a href="diemso.html">Điểm số</a>
-      <a href="sothich.html">Sở thích</a>
-      <a class="active" href="tinhcach.html">Tính cách</a>
-      <a href="muc-tieu.html">Mục tiêu</a>
-      <a href="truong-hoc.html">Trường học</a>
-      <a href="ketqua.html">Kết quả</a>
-      <a href="chatbot.html">Chatbot</a>
+  <nav>
+    <a href="index.html">Trang chủ</a>
+    <a href="thongtin.html">Thông tin</a>
+    <a href="diemso.html">Điểm số</a>
+    <a href="sothich.html">Sở thích</a>
+    <a class="active" href="tinhcach.html">Tính cách</a>
+    <a href="muc-tieu.html">Mục tiêu</a>
+    <a href="truong-hoc.html">Trường học</a>
+    <a href="ketqua.html">Kết quả</a>
+    <a href="chatbot.html">Chatbot</a>
 
-      <button class="session-reset" onclick="resetAllData()">
-        ↻ Phiên mới
+    <button class="session-reset" onclick="resetAllData()">
+      ↻ Phiên mới
+    </button>
+  </nav>
+</header>
+
+<main class="page">
+
+<section class="glass form-card wide">
+
+<p class="eyebrow">BƯỚC 4</p>
+
+<h1>Khám phá tính cách</h1>
+
+<p class="muted">
+  Chọn phương án gần với bạn nhất. Các câu hỏi gồm 4 lựa chọn (A, B, C, D) giúp phân tích xu hướng tư duy, phong cách làm việc và định hướng nhóm tính cách phù hợp nhất với bạn.
+</p>
+
+<div id="questions"></div>
+
+<div class="actions">
+  <button class="btn primary" onclick="finish()">
+    Lưu & tiếp tục →
+  </button>
+</div>
+
+</section>
+
+</main>
+
+<!-- MODAL KẾT QUẢ TÍNH CÁCH -->
+<div id="personalityModal" class="mbti-result-modal" style="display: none;">
+  <div class="mbti-result-card">
+    <p class="eyebrow">KẾT QUẢ PHÂN TÍCH TÍNH CÁCH</p>
+    <div id="modalCode" class="mbti-badge-large">INTP</div>
+    <h2 id="modalTitle" style="color: #fff; margin-bottom: 8px;">Nhà tư duy logic</h2>
+    <p id="modalTrait" style="color: #a5b4fc; font-weight: 600; margin-bottom: 12px; font-size: 15px;">
+      Thiên về tư duy logic và phân tích
+    </p>
+    <p id="modalDesc" style="color: #cbd5e1; margin: 0 0 24px; line-height: 1.6; font-size: 14px;">
+      Mô tả phong cách tính cách...
+    </p>
+    <div class="actions" style="justify-content: center; margin-top: 10px;">
+      <button class="btn primary" onclick="goToNextStep()">
+        Tiếp tục sang Mục tiêu 🎯
       </button>
-    </nav>
-  </header>
-
-  <main class="page">
-
-    <section class="glass form-card wide">
-
-      <p class="eyebrow">BƯỚC 4</p>
-
-      <h1>Khám phá tính cách</h1>
-
-      <p class="muted">
-        Chọn phương án gần với bạn nhất. Các câu hỏi gồm 4 lựa chọn (A, B, C, D) giúp phân tích xu hướng tư duy, phong
-        cách làm việc và định hướng nhóm tính cách phù hợp nhất với bạn.
-      </p>
-
-      <div id="questions"></div>
-
-      <div class="actions">
-        <button class="btn primary" onclick="finish()">
-          Lưu & tiếp tục →
-        </button>
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- MODAL KẾT QUẢ TÍNH CÁCH -->
-  <div id="personalityModal" class="mbti-result-modal" style="display: none;">
-    <div class="mbti-result-card">
-      <p class="eyebrow">KẾT QUẢ PHÂN TÍCH TÍNH CÁCH</p>
-      <div id="modalCode" class="mbti-badge-large">INTP</div>
-      <h2 id="modalTitle" style="color: #fff; margin-bottom: 8px;">Nhà tư duy logic</h2>
-      <p id="modalTrait" style="color: #a5b4fc; font-weight: 600; margin-bottom: 12px; font-size: 15px;">
-        Thiên về tư duy logic và phân tích
-      </p>
-      <p id="modalDesc" style="color: #cbd5e1; margin: 0 0 24px; line-height: 1.6; font-size: 14px;">
-        Mô tả phong cách tính cách...
-      </p>
-      <div class="actions" style="justify-content: center; margin-top: 10px;">
-        <button class="btn primary" onclick="goToNextStep()">
-          Tiếp tục sang Mục tiêu 🎯
-        </button>
-      </div>
     </div>
   </div>
+</div>
 
-  <script src="main.js"></script>
+<script src="main.js"></script>
 
-  <script>
+<script>
 
-    const questionsData = [
-      {
-        title: 'Khi gặp một bài toán hoặc một thử thách khó trong học tập, bạn thường...',
-        options: [
-          'Phân tích đề bài, bẻ nhỏ vấn đề và tìm cách giải logic từng bước một.',
-          'Hỏi ý kiến bạn bè hoặc thầy cô để cùng nhau trao đổi, tìm hướng giải quyết.',
-          'Thử một góc nhìn hoàn toàn mới, một công thức hoặc cách tiếp cận sáng tạo.',
-          'Đọc kỹ lại sách giáo khoa, làm theo các bước đã học một cách cẩn trọng, kiên nhẫn.'
-        ]
-      },
-      {
-        title: 'Khi tham gia làm việc nhóm hoặc hoạt động tập thể, vai trò tự nhiên nhất của bạn là...',
-        options: [
-          'Người phân tích nhiệm vụ, xây dựng kế hoạch và kiểm tra tính hợp lý của công việc.',
-          'Người kết nối các thành viên, lắng nghe ý kiến và duy trì không khí đoàn kết.',
-          'Người đưa ra các ý tưởng mới mẻ, đề xuất những giải pháp độc đáo cho cả nhóm.',
-          'Người hỗ trợ phía sau, cẩn thận hoàn thành đúng hạn các phần việc được giao.'
-        ]
-      },
-      {
-        title: 'Bạn cảm thấy bị thu hút và tự tin nhất với kiểu công việc nào trong tương lai?',
-        options: [
-          'Làm việc với số liệu, hệ thống logic, thuật toán hoặc công nghệ kỹ thuật cao.',
-          'Làm việc với con người: tư vấn, giảng dạy, giao tiếp, chăm sóc hoặc đàm phán.',
-          'Làm việc sáng tạo: thiết kế, truyền thông, nghệ thuật hoặc khởi nghiệp đổi mới.',
-          'Làm việc trong môi trường ổn định, có quy trình rõ ràng, kỷ luật và bài bản.'
-        ]
-      },
-      {
-        title: 'Khi tiếp cận một chủ đề hoặc vấn đề mới lạ, phản xạ đầu tiên của bạn là...',
-        options: [
-          'Tìm hiểu tài liệu, số liệu để phân tích bản chất và quy luật vận hành của nó.',
-          'Trao đổi với mọi người xung quanh để xem họ suy nghĩ và cảm nhận như thế nào.',
-          'Tự do thử nghiệm, hình dung ra những ứng dụng và khả năng thú vị chưa ai nghĩ tới.',
-          'Quan sát kỹ lưỡng, cân nhắc tính thực tế trước khi bắt tay vào thực hiện.'
-        ]
-      },
-      {
-        title: 'Sau một tuần học tập bận rộn, cách bạn nạp lại năng lượng hiệu quả nhất là...',
-        options: [
-          'Tự nghiên cứu, đọc sách hoặc tìm hiểu về một chủ đề kiến thức bạn tò mò.',
-          'Tụ tập ăn uống, đi cà phê và trò chuyện sôi nổi cùng nhóm bạn thân.',
-          'Nghe nhạc, vẽ tranh, chụp ảnh hoặc tự do làm những điều ngẫu hứng.',
-          'Dọn dẹp góc học tập ngăn nắp, xem phim yêu thích và nghỉ ngơi yên tĩnh.'
-        ]
-      },
-      {
-        title: 'Điều gì khiến bạn cảm thấy tự hào và có động lực học tập nhất?',
-        options: [
-          'Tự mình tìm ra lời giải cho một câu hỏi hóc búa mà ít người giải được.',
-          'Được mọi người xung quanh tin tưởng chia sẻ và giúp đỡ bạn bè cùng tiến bộ.',
-          'Tạo ra một sản phẩm, bài viết hay tác phẩm mang đậm phong cách cá nhân.',
-          'Hoàn thành xuất sắc mục tiêu đề ra đúng thời hạn với sự chuẩn xác cao.'
-        ]
-      },
-      {
-        title: 'Khi gặp một kết quả kiểm tra hoặc việc làm chưa như mong đợi, bạn thường...',
-        options: [
-          'Tỉnh táo phân tích nguyên nhân xem mình đã sai ở đâu để khắc phục triệt để.',
-          'Chia sẻ với người thân hoặc bạn bè để nhận lời khuyên và giải tỏa tâm lý.',
-          'Xem đó là bài học thú vị, nhanh chóng tìm ra một hướng đi hoặc cách tiếp cận khác.',
-          'Tự chấn chỉnh bản thân, kiên trì luyện tập và quyết tâm làm lại đến khi thành công.'
-        ]
-      },
-      {
-        title: 'Môi trường học tập lý tưởng nhất đối với bạn là nơi...',
-        options: [
-          'Đề cao tư duy logic, tính chuyên môn sâu và tự do nghiên cứu độc lập.',
-          'Thân thiện, ấm áp, nhiều sự kết nối, tương tác và cùng nhau hỗ trợ.',
-          'Năng động, linh hoạt, tôn trọng sự sáng tạo và không bị gò bó quy chuẩn.',
-          'Có hệ thống rõ ràng, kỷ luật, công bằng và tôn trọng các cam kết chung.'
-        ]
-      },
-      {
-        title: 'Khi đưa ra một quyết định quan trọng, bạn thường dựa vào...',
-        options: [
-          'Sự phân tích lý tính, các bằng chứng xác thực và xác suất thành công.',
-          'Cảm xúc, sự thấu hiểu và tác động của quyết định đó đến những người liên quan.',
-          'Cảm hứng, trực giác và những cơ hội tiềm năng có thể mở ra trong tương lai.',
-          'Kinh nghiệm thực tế, lời khuyên của người đi trước và các quy định sẵn có.'
-        ]
-      },
-      {
-        title: 'Bạn mong muốn được thầy cô và bạn bè đánh giá cao nhất về...',
-        options: [
-          'Khả năng tư duy logic, sự am hiểu và trí tuệ sắc bén.',
-          'Tấm lòng chân thành, sự thấu hiểu và kỹ năng kết nối mọi người.',
-          'Óc sáng tạo phong phú, sự độc đáo và khả năng tạo ra sự khác biệt.',
-          'Sự đáng tin cậy, tính kiên nhẫn, trung thực và tinh thần trách nhiệm cao.'
-        ]
-      }
-    ];
+const questionsData = [
+  {
+    title: 'Khi gặp một bài toán hoặc một thử thách khó trong học tập, bạn thường...',
+    options: [
+      'Phân tích đề bài, bẻ nhỏ vấn đề và tìm cách giải logic từng bước một.',
+      'Hỏi ý kiến bạn bè hoặc thầy cô để cùng nhau trao đổi, tìm hướng giải quyết.',
+      'Thử một góc nhìn hoàn toàn mới, một công thức hoặc cách tiếp cận sáng tạo.',
+      'Đọc kỹ lại sách giáo khoa, làm theo các bước đã học một cách cẩn trọng, kiên nhẫn.'
+    ]
+  },
+  {
+    title: 'Khi tham gia làm việc nhóm hoặc hoạt động tập thể, vai trò tự nhiên nhất của bạn là...',
+    options: [
+      'Người phân tích nhiệm vụ, xây dựng kế hoạch và kiểm tra tính hợp lý của công việc.',
+      'Người kết nối các thành viên, lắng nghe ý kiến và duy trì không khí đoàn kết.',
+      'Người đưa ra các ý tưởng mới mẻ, đề xuất những giải pháp độc đáo cho cả nhóm.',
+      'Người hỗ trợ phía sau, cẩn thận hoàn thành đúng hạn các phần việc được giao.'
+    ]
+  },
+  {
+    title: 'Bạn cảm thấy bị thu hút và tự tin nhất với kiểu công việc nào trong tương lai?',
+    options: [
+      'Làm việc với số liệu, hệ thống logic, thuật toán hoặc công nghệ kỹ thuật cao.',
+      'Làm việc với con người: tư vấn, giảng dạy, giao tiếp, chăm sóc hoặc đàm phán.',
+      'Làm việc sáng tạo: thiết kế, truyền thông, nghệ thuật hoặc khởi nghiệp đổi mới.',
+      'Làm việc trong môi trường ổn định, có quy trình rõ ràng, kỷ luật và bài bản.'
+    ]
+  },
+  {
+    title: 'Khi tiếp cận một chủ đề hoặc vấn đề mới lạ, phản xạ đầu tiên của bạn là...',
+    options: [
+      'Tìm hiểu tài liệu, số liệu để phân tích bản chất và quy luật vận hành của nó.',
+      'Trao đổi với mọi người xung quanh để xem họ suy nghĩ và cảm nhận như thế nào.',
+      'Tự do thử nghiệm, hình dung ra những ứng dụng và khả năng thú vị chưa ai nghĩ tới.',
+      'Quan sát kỹ lưỡng, cân nhắc tính thực tế trước khi bắt tay vào thực hiện.'
+    ]
+  },
+  {
+    title: 'Sau một tuần học tập bận rộn, cách bạn nạp lại năng lượng hiệu quả nhất là...',
+    options: [
+      'Tự nghiên cứu, đọc sách hoặc tìm hiểu về một chủ đề kiến thức bạn tò mò.',
+      'Tụ tập ăn uống, đi cà phê và trò chuyện sôi nổi cùng nhóm bạn thân.',
+      'Nghe nhạc, vẽ tranh, chụp ảnh hoặc tự do làm những điều ngẫu hứng.',
+      'Dọn dẹp góc học tập ngăn nắp, xem phim yêu thích và nghỉ ngơi yên tĩnh.'
+    ]
+  },
+  {
+    title: 'Điều gì khiến bạn cảm thấy tự hào và có động lực học tập nhất?',
+    options: [
+      'Tự mình tìm ra lời giải cho một câu hỏi hóc búa mà ít người giải được.',
+      'Được mọi người xung quanh tin tưởng chia sẻ và giúp đỡ bạn bè cùng tiến bộ.',
+      'Tạo ra một sản phẩm, bài viết hay tác phẩm mang đậm phong cách cá nhân.',
+      'Hoàn thành xuất sắc mục tiêu đề ra đúng thời hạn với sự chuẩn xác cao.'
+    ]
+  },
+  {
+    title: 'Khi gặp một kết quả kiểm tra hoặc việc làm chưa như mong đợi, bạn thường...',
+    options: [
+      'Tỉnh táo phân tích nguyên nhân xem mình đã sai ở đâu để khắc phục triệt để.',
+      'Chia sẻ với người thân hoặc bạn bè để nhận lời khuyên và giải tỏa tâm lý.',
+      'Xem đó là bài học thú vị, nhanh chóng tìm ra một hướng đi hoặc cách tiếp cận khác.',
+      'Tự chấn chỉnh bản thân, kiên trì luyện tập và quyết tâm làm lại đến khi thành công.'
+    ]
+  },
+  {
+    title: 'Môi trường học tập lý tưởng nhất đối với bạn là nơi...',
+    options: [
+      'Đề cao tư duy logic, tính chuyên môn sâu và tự do nghiên cứu độc lập.',
+      'Thân thiện, ấm áp, nhiều sự kết nối, tương tác và cùng nhau hỗ trợ.',
+      'Năng động, linh hoạt, tôn trọng sự sáng tạo và không bị gò bó quy chuẩn.',
+      'Có hệ thống rõ ràng, kỷ luật, công bằng và tôn trọng các cam kết chung.'
+    ]
+  },
+  {
+    title: 'Khi đưa ra một quyết định quan trọng, bạn thường dựa vào...',
+    options: [
+      'Sự phân tích lý tính, các bằng chứng xác thực và xác suất thành công.',
+      'Cảm xúc, sự thấu hiểu và tác động của quyết định đó đến những người liên quan.',
+      'Cảm hứng, trực giác và những cơ hội tiềm năng có thể mở ra trong tương lai.',
+      'Kinh nghiệm thực tế, lời khuyên của người đi trước và các quy định sẵn có.'
+    ]
+  },
+  {
+    title: 'Bạn mong muốn được thầy cô và bạn bè đánh giá cao nhất về...',
+    options: [
+      'Khả năng tư duy logic, sự am hiểu và trí tuệ sắc bén.',
+      'Tấm lòng chân thành, sự thấu hiểu và kỹ năng kết nối mọi người.',
+      'Óc sáng tạo phong phú, sự độc đáo và khả năng tạo ra sự khác biệt.',
+      'Sự đáng tin cậy, tính kiên nhẫn, trung thực và tinh thần trách nhiệm cao.'
+    ]
+  }
+];
 
-    const letters = ['A', 'B', 'C', 'D'];
-    const old = read('personalityAnswers') || [];
-    const box = document.getElementById('questions');
+const letters = ['A', 'B', 'C', 'D'];
+const old = read('personalityAnswers') || [];
+const box = document.getElementById('questions');
 
-    let html = '';
+let html = '';
 
-    questionsData.forEach((q, i) => {
-      const isOldVal = (old[i] != null && old[i] >= 0 && old[i] <= 3) ? old[i] : null;
+questionsData.forEach((q, i) => {
+  const isOldVal = (old[i] != null && old[i] >= 0 && old[i] <= 3) ? old[i] : null;
 
-      html += `
+  html += `
     <div class="question" id="qBox${i}">
       <h3>Câu ${i + 1}: ${q.title}</h3>
   `;
 
-      q.options.forEach((optText, optIdx) => {
-        html += `
+  q.options.forEach((optText, optIdx) => {
+    html += `
       <label class="radio">
         <input
           type="radio"
@@ -207,55 +205,54 @@
         </div>
       </label>
     `;
-      });
+  });
 
-      html += `</div>`;
-    });
+  html += `</div>`;
+});
 
-    box.innerHTML = html;
+box.innerHTML = html;
 
-    function finish() {
-      const ans = [];
+function finish() {
+  const ans = [];
 
-      for (let i = 0; i < questionsData.length; i++) {
-        const checked = document.querySelector(`input[name=q${i}]:checked`);
-        if (!checked) {
-          alert(`Bạn hãy trả lời câu hỏi số ${i + 1} nhé!`);
-          const target = document.getElementById(`qBox${i}`);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-          return;
-        }
-        ans.push(Number(checked.value));
+  for (let i = 0; i < questionsData.length; i++) {
+    const checked = document.querySelector(`input[name=q${i}]:checked`);
+    if (!checked) {
+      alert(`Bạn hãy trả lời câu hỏi số ${i + 1} nhé!`);
+      const target = document.getElementById(`qBox${i}`);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
-
-      // Lưu câu trả lời
-      save('personalityAnswers', ans);
-
-      // Tính toán kết quả tính cách & MBTI
-      const mbti = computeMBTI(ans);
-      if (mbti) {
-        save('mbtiType', mbti.type);
-        save('mbtiData', mbti);
-
-        // Hiển thị modal kết quả
-        document.getElementById('modalCode').innerText = mbti.type;
-        document.getElementById('modalTitle').innerText = mbti.title;
-        document.getElementById('modalTrait').innerText = mbti.vietnameseTrait.toUpperCase();
-        document.getElementById('modalDesc').innerText = mbti.desc;
-        document.getElementById('personalityModal').style.display = 'flex';
-      } else {
-        location.href = 'muc-tieu.html';
-      }
+      return;
     }
+    ans.push(Number(checked.value));
+  }
 
-    function goToNextStep() {
-      location.href = 'muc-tieu.html';
-    }
+  // Lưu câu trả lời
+  save('personalityAnswers', ans);
 
-  </script>
+  // Tính toán kết quả tính cách & MBTI
+  const mbti = computeMBTI(ans);
+  if (mbti) {
+    save('mbtiType', mbti.type);
+    save('mbtiData', mbti);
+
+    // Hiển thị modal kết quả
+    document.getElementById('modalCode').innerText = mbti.type;
+    document.getElementById('modalTitle').innerText = mbti.title;
+    document.getElementById('modalTrait').innerText = mbti.vietnameseTrait.toUpperCase();
+    document.getElementById('modalDesc').innerText = mbti.desc;
+    document.getElementById('personalityModal').style.display = 'flex';
+  } else {
+    location.href = 'muc-tieu.html';
+  }
+}
+
+function goToNextStep() {
+  location.href = 'muc-tieu.html';
+}
+
+</script>
 
 </body>
-
 </html>
