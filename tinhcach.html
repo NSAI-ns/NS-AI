@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
@@ -44,10 +44,62 @@
 <h1>Khám phá tính cách</h1>
 
 <p class="muted">
-  Chọn phương án gần với bạn nhất. Các câu hỏi gồm 4 lựa chọn (A, B, C, D) giúp phân tích xu hướng tư duy, phong cách làm việc và định hướng nhóm tính cách phù hợp nhất với bạn.
+  Bộ câu hỏi gồm 2 phần: <strong>Trắc nghiệm (A, B, C, D và đáp án E tự trả lời)</strong> giúp định hình nhóm tính cách MBTI, kết hợp cùng <strong>Câu hỏi tự trả lời chuyên sâu</strong> giúp AI thấu hiểu năng lực và khát vọng của riêng bạn.
 </p>
 
-<div id="questions"></div>
+<!-- PHẦN I: TRẮC NGHIỆM (A, B, C, D, E) -->
+<div style="margin-bottom: 28px;">
+  <h2 style="font-size: 19px; color: #fff; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+    📋 Phần I: Trắc nghiệm tính cách (Có đáp án E tự do trả lời)
+  </h2>
+  <p class="muted" style="font-size: 13.5px; margin-top: 0;">
+    Chọn phương án có sẵn (A, B, C, D) hoặc chọn <strong>đáp án E (Khác)</strong> và gõ trực tiếp câu trả lời của bạn:
+  </p>
+  <div id="questions"></div>
+</div>
+
+<!-- PHẦN II: CÂU HỎI TỰ TRẢ LỜI -->
+<div class="open-questions-section">
+  <div class="open-section-header">
+    <h2>✍️ Phần II: Câu hỏi tự bộc lộ bản thân (Tự trả lời)</h2>
+    <p>
+      Hãy chia sẻ thêm bằng lời văn của chính bạn để AI có thêm dữ liệu thực tế giải thích cơ sở phân tích trước khi gợi ý trường học:
+    </p>
+  </div>
+
+  <div class="open-q-card">
+    <div class="open-q-title">
+      <span>Câu 1: Điểm mạnh & Hoạt động bạn cảm thấy tự tin nhất</span>
+      <span class="open-q-badge">Tự luận</span>
+    </div>
+    <div class="open-q-hint">
+      Bạn cảm thấy mình làm tốt nhất hoặc hào hứng nhất ở lĩnh vực/hoạt động nào? (Ví dụ: giải bài tập logic, tự mày mò phần mềm/code, viết lách, giao tiếp thuyết phục, sáng tạo nghệ thuật, nghiên cứu sinh học, hay tổ chức sự kiện...)
+    </div>
+    <textarea id="openStrength" class="open-q-textarea" placeholder="Nhập câu trả lời của bạn (ví dụ: Em thích mày mò tìm hiểu công nghệ, tự học lập trình và tạo ra website/app...)"></textarea>
+  </div>
+
+  <div class="open-q-card">
+    <div class="open-q-title">
+      <span>Câu 2: Môi trường làm việc & Phong cách lý tưởng</span>
+      <span class="open-q-badge">Tự luận</span>
+    </div>
+    <div class="open-q-hint">
+      Sau 5-10 năm nữa, bạn muốn làm việc trong một môi trường như thế nào? (Ví dụ: công ty công nghệ năng động, phòng nghiên cứu độc lập, bệnh viện tận tâm, giảng đường, cơ quan pháp luật, hoặc tự khởi nghiệp kinh doanh...)
+    </div>
+    <textarea id="openIdealEnv" class="open-q-textarea" placeholder="Nhập câu trả lời của bạn (ví dụ: Em thích môi trường hiện đại, cởi mở, tự do sáng tạo và đồng nghiệp hỗ trợ nhau...)"></textarea>
+  </div>
+
+  <div class="open-q-card">
+    <div class="open-q-title">
+      <span>Câu 3: Mục tiêu lớn nhất & Giá trị muốn đóng góp</span>
+      <span class="open-q-badge">Tự luận</span>
+    </div>
+    <div class="open-q-hint">
+      Điều bạn mong muốn đạt được hoặc mang lại cho bản thân, gia đình và cộng đồng qua công việc tương lai là gì?
+    </div>
+    <textarea id="openVision" class="open-q-textarea" placeholder="Nhập câu trả lời của bạn (ví dụ: Em muốn tạo ra các sản phẩm công nghệ có ích cho cộng đồng, giải quyết các vấn đề thực tế và phát triển bản thân...)"></textarea>
+  </div>
+</div>
 
 <div class="actions">
   <button class="btn primary" onclick="finish()">
@@ -176,20 +228,28 @@ const questionsData = [
   }
 ];
 
-const letters = ['A', 'B', 'C', 'D'];
+const letters = ['A', 'B', 'C', 'D', 'E'];
 const old = read('personalityAnswers') || [];
+const oldCustom = read('personalityCustomAnswers') || {};
 const box = document.getElementById('questions');
+
+function safeAttr(s) {
+  if (!s) return '';
+  return String(s).replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
 let html = '';
 
 questionsData.forEach((q, i) => {
-  const isOldVal = (old[i] != null && old[i] >= 0 && old[i] <= 3) ? old[i] : null;
+  const isOldVal = (old[i] != null && old[i] >= 0 && old[i] <= 4) ? old[i] : null;
+  const customVal = oldCustom[i] || '';
 
   html += `
     <div class="question" id="qBox${i}">
       <h3>Câu ${i + 1}: ${q.title}</h3>
   `;
 
+  // Các phương án A, B, C, D
   q.options.forEach((optText, optIdx) => {
     html += `
       <label class="radio">
@@ -198,6 +258,7 @@ questionsData.forEach((q, i) => {
           name="q${i}"
           value="${optIdx}"
           ${isOldVal === optIdx ? 'checked' : ''}
+          onchange="onRadioChange(${i}, ${optIdx})"
         >
         <div class="radio-content">
           <span class="radio-letter">${letters[optIdx]}</span>
@@ -207,31 +268,108 @@ questionsData.forEach((q, i) => {
     `;
   });
 
+  // ĐÁP ÁN E: KHÁC (KÈM Ô NHẬP TỰ TRẢ LỜI ĐẶT NGOÀI LABEL)
+  html += `
+    <div class="radio radio-custom-option" id="radioBoxE${i}">
+      <label class="custom-radio-top" for="radioE${i}">
+        <input
+          type="radio"
+          name="q${i}"
+          value="4"
+          id="radioE${i}"
+          ${isOldVal === 4 ? 'checked' : ''}
+          onchange="onRadioChange(${i}, 4)"
+        >
+        <span class="radio-letter">E</span>
+        <span class="custom-radio-text">Khác (Nhập phương án / suy nghĩ riêng của bạn):</span>
+      </label>
+      <div class="custom-input-wrap">
+        <input
+          type="text"
+          id="customAnswer${i}"
+          class="custom-answer-input"
+          placeholder="Gõ câu trả lời riêng của bạn cho câu hỏi này..."
+          value="${safeAttr(customVal)}"
+          onclick="event.stopPropagation(); selectOptionE(${i});"
+          onfocus="event.stopPropagation(); selectOptionE(${i});"
+          oninput="event.stopPropagation(); selectOptionE(${i});"
+        >
+      </div>
+    </div>
+  `;
+
   html += `</div>`;
 });
 
 box.innerHTML = html;
 
+function selectOptionE(index) {
+  const radio = document.getElementById(`radioE${index}`);
+  if (radio && !radio.checked) {
+    radio.checked = true;
+  }
+}
+
+function onRadioChange(qIndex, optIndex) {
+  if (optIndex === 4) {
+    const input = document.getElementById(`customAnswer${qIndex}`);
+    if (input) {
+      setTimeout(() => input.focus(), 50);
+    }
+  }
+}
+
+// Nạp lại các câu hỏi tự trả lời đã lưu trước đó nếu có
+const savedReflect = read('personalitySelfReflect') || {};
+if (savedReflect.strengths) document.getElementById('openStrength').value = savedReflect.strengths;
+if (savedReflect.idealEnv) document.getElementById('openIdealEnv').value = savedReflect.idealEnv;
+if (savedReflect.vision) document.getElementById('openVision').value = savedReflect.vision;
+
 function finish() {
   const ans = [];
+  const customAnswers = {};
 
   for (let i = 0; i < questionsData.length; i++) {
     const checked = document.querySelector(`input[name=q${i}]:checked`);
     if (!checked) {
-      alert(`Bạn hãy trả lời câu hỏi số ${i + 1} nhé!`);
+      alert(`Bạn hãy trả lời câu hỏi trắc nghiệm số ${i + 1} nhé!`);
       const target = document.getElementById(`qBox${i}`);
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       return;
     }
-    ans.push(Number(checked.value));
+    const val = Number(checked.value);
+    ans.push(val);
+
+    if (val === 4) {
+      const inputEl = document.getElementById(`customAnswer${i}`);
+      const txt = (inputEl ? inputEl.value : '').trim();
+      if (!txt) {
+        alert(`Bạn đã chọn đáp án E (Khác) ở Câu ${i + 1}. Vui lòng nhập câu trả lời của bạn vào ô bên cạnh nhé!`);
+        if (inputEl) {
+          inputEl.focus();
+          inputEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+      customAnswers[i] = txt;
+    }
   }
 
-  // Lưu câu trả lời
+  // 1. Lưu câu trả lời trắc nghiệm & câu trả lời E riêng
   save('personalityAnswers', ans);
+  save('personalityCustomAnswers', customAnswers);
 
-  // Tính toán kết quả tính cách & MBTI
+  // 2. Lưu câu hỏi tự trả lời phần II
+  const selfReflect = {
+    strengths: (document.getElementById('openStrength').value || '').trim(),
+    idealEnv: (document.getElementById('openIdealEnv').value || '').trim(),
+    vision: (document.getElementById('openVision').value || '').trim()
+  };
+  save('personalitySelfReflect', selfReflect);
+
+  // 3. Tính toán kết quả tính cách & MBTI
   const mbti = computeMBTI(ans);
   if (mbti) {
     save('mbtiType', mbti.type);

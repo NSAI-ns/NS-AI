@@ -1,15 +1,17 @@
 /**
  * NS AI - Thuật toán phân tích định hướng nghề nghiệp
- * Kết hợp: Điểm số môn học, Sở thích (100+ danh mục), Xu hướng tính cách, Mục tiêu học sinh
- * Cung cấp: Độ phù hợp (%), Lý do, Tổ hợp môn xét tuyển nên theo (A00, A01, D01, B00...) và lời khuyên.
+ * Kết hợp 5 trụ cột: Điểm số môn học, Sở thích, Xu hướng tính cách MBTI, Câu hỏi tự trả lời & Đáp án E, Mục tiêu học sinh
+ * Cung cấp: Độ phù hợp, Lập luận minh bạch, Tổ hợp môn xét tuyển và lời khuyên chi tiết.
  */
 
 function analyzeCareer() {
-  const info = read('info') || {};
-  const scores = read('scores') || {};
-  const hobbies = read('hobbies') || { selected: [], custom: '' };
-  const answers = read('personalityAnswers') || [];
-  const goals = read('goals') || { selected: [], other: '' };
+  const info = typeof read === 'function' ? (read('info') || {}) : {};
+  const scores = typeof read === 'function' ? (read('scores') || {}) : {};
+  const hobbies = typeof read === 'function' ? (read('hobbies') || { selected: [], custom: '' }) : { selected: [], custom: '' };
+  const answers = typeof read === 'function' ? (read('personalityAnswers') || []) : [];
+  const customAnswers = typeof read === 'function' ? (read('personalityCustomAnswers') || {}) : {};
+  const selfReflect = typeof read === 'function' ? (read('personalitySelfReflect') || { strengths: '', idealEnv: '', vision: '' }) : { strengths: '', idealEnv: '', vision: '' };
+  const goals = typeof read === 'function' ? (read('goals') || { selected: [], other: '' }) : { selected: [], other: '' };
 
   const vals = Object.values(scores);
   const avg = vals.length
@@ -19,6 +21,15 @@ function analyzeCareer() {
   const allHobbyText = ((hobbies.selected || []).join(' ') + ' ' + (hobbies.custom || '')).toLowerCase();
   const has = (...keywords) => keywords.some(k => allHobbyText.includes(k.toLowerCase()));
 
+  const customValues = Object.values(customAnswers).filter(Boolean);
+  const openText = (
+    (selfReflect.strengths || '') + ' ' +
+    (selfReflect.idealEnv || '') + ' ' +
+    (selfReflect.vision || '') + ' ' +
+    customValues.join(' ')
+  ).toLowerCase();
+  const hasReflect = (...keywords) => keywords.some(k => openText.includes(k.toLowerCase()));
+
   const result = [
     {
       name: 'Công nghệ thông tin',
@@ -27,7 +38,8 @@ function analyzeCareer() {
         (scores['Tin học'] || 0) * 3 +
         (scores['Toán'] || 0) * 2 +
         (has('công nghệ', 'lập trình', 'phần mềm', 'website', 'máy tính', 'an ninh mạng', 'app') ? 14 : 0) +
-        (has('game', 'esports') ? 5 : 0),
+        (has('game', 'esports') ? 5 : 0) +
+        (hasReflect('công nghệ', 'lập trình', 'code', 'phần mềm', 'máy tính', 'ai', 'game', 'dữ liệu', 'app') ? 12 : 0),
       combinations: [
         'A00 (Toán, Lý, Hóa)',
         'A01 (Toán, Lý, Anh)',
@@ -44,7 +56,8 @@ function analyzeCareer() {
         (scores['Tin học'] || 0) * 2.5 +
         (scores['Toán'] || 0) * 2.5 +
         (has('ai', 'trí tuệ nhân tạo', 'dữ liệu', 'khoa học', 'toán', 'robot') ? 15 : 0) +
-        (has('lập trình', 'công nghệ') ? 8 : 0),
+        (has('lập trình', 'công nghệ') ? 8 : 0) +
+        (hasReflect('ai', 'trí tuệ nhân tạo', 'dữ liệu', 'khoa học', 'toán', 'robot', 'thuật toán') ? 12 : 0),
       combinations: [
         'A00 (Toán, Lý, Hóa)',
         'A01 (Toán, Lý, Anh)',
@@ -60,7 +73,8 @@ function analyzeCareer() {
         (scores['Toán'] || 0) * 1.5 +
         (scores['Tiếng Anh'] || 0) * 1.5 +
         (has('kinh doanh', 'khởi nghiệp', 'tài chính', 'chứng khoán', 'marketing', 'bán hàng', 'thương mại', 'logistics') ? 16 : 0) +
-        (has('giao tiếp', 'lãnh đạo', 'đàm phán') ? 7 : 0),
+        (has('giao tiếp', 'lãnh đạo', 'đàm phán') ? 7 : 0) +
+        (hasReflect('kinh doanh', 'khởi nghiệp', 'tài chính', 'quản lý', 'marketing', 'doanh nghiệp', 'lãnh đạo') ? 12 : 0),
       combinations: [
         'A01 (Toán, Lý, Anh)',
         'D01 (Toán, Văn, Anh)',
@@ -77,7 +91,8 @@ function analyzeCareer() {
         (scores['Sinh học'] || 0) * 2.5 +
         (scores['Hóa học'] || 0) * 2.2 +
         (has('y học', 'dược', 'sức khỏe', 'thảo dược', 'bệnh') ? 16 : 0) +
-        (has('khoa học', 'thí nghiệm', 'sinh học', 'hóa học') ? 9 : 0),
+        (has('khoa học', 'thí nghiệm', 'sinh học', 'hóa học') ? 9 : 0) +
+        (hasReflect('bác sĩ', 'y tế', 'chữa bệnh', 'cứu người', 'dược', 'sức khỏe', 'bệnh viện') ? 12 : 0),
       combinations: [
         'B00 (Toán, Hóa, Sinh)',
         'A00 (Toán, Lý, Hóa)',
@@ -93,7 +108,8 @@ function analyzeCareer() {
         (scores['Toán'] || 0) * 2 +
         (scores['Vật lý'] || 0) * 2 +
         (has('kỹ thuật', 'cơ khí', 'ô tô', 'máy bay', 'chế tạo', 'mạch điện', 'in 3d', 'kiến trúc') ? 16 : 0) +
-        (has('robot', 'tự động') ? 6 : 0),
+        (has('robot', 'tự động') ? 6 : 0) +
+        (hasReflect('kỹ thuật', 'cơ khí', 'chế tạo', 'máy móc', 'ô tô', 'robot', 'lắp ráp') ? 12 : 0),
       combinations: [
         'A00 (Toán, Lý, Hóa)',
         'A01 (Toán, Lý, Anh)',
@@ -109,7 +125,8 @@ function analyzeCareer() {
         (scores['Ngữ văn'] || 0) * 2 +
         (scores['Tiếng Anh'] || 0) * 2 +
         (has('giao tiếp', 'thuyết trình', 'tranh biện', 'ngoại ngữ', 'luật', 'công lý') ? 14 : 0) +
-        (has('viết', 'báo chí', 'podcast', 'nội dung', 'truyện', 'truyền thông') ? 10 : 0),
+        (has('viết', 'báo chí', 'podcast', 'nội dung', 'truyện', 'truyền thông') ? 10 : 0) +
+        (hasReflect('luật', 'công lý', 'báo chí', 'truyền thông', 'viết lách', 'ngoại ngữ', 'tranh biện', 'thuyết trình') ? 12 : 0),
       combinations: [
         'D01 (Toán, Văn, Anh)',
         'C00 (Văn, Sử, Địa)',
@@ -126,7 +143,8 @@ function analyzeCareer() {
         (scores['Ngữ văn'] || 0) * 1.4 +
         (scores['Toán'] || 0) * 1.2 +
         (has('giảng dạy', 'truyền cảm hứng', 'giáo dục') ? 16 : 0) +
-        (has('giao tiếp', 'sách', 'tâm lý') ? 8 : 0),
+        (has('giao tiếp', 'sách', 'tâm lý') ? 8 : 0) +
+        (hasReflect('dạy học', 'giảng dạy', 'giáo dục', 'truyền cảm hứng', 'học sinh', 'sư phạm') ? 12 : 0),
       combinations: [
         'C00 (Văn, Sử, Địa)',
         'D01 (Toán, Văn, Anh)',
@@ -139,11 +157,20 @@ function analyzeCareer() {
   ];
 
   const mbti = typeof computeMBTI === 'function' ? computeMBTI(answers) : null;
-  const boosts = answers.reduce((o, a) => {
+  const customMap = typeof read === 'function' ? (read('personalityCustomAnswers') || {}) : {};
+
+  const boosts = answers.reduce((o, a, i) => {
     if (a === 0) o.logic = (o.logic || 0) + 1;
     if (a === 1) o.people = (o.people || 0) + 1;
     if (a === 2) o.creative = (o.creative || 0) + 1;
     if (a === 3) o.patient = (o.patient || 0) + 1;
+    if (a === 4) {
+      const txt = (customMap[i] || '').toLowerCase();
+      if (/toán|logic|phân tích|nghiên cứu|khoa học|công nghệ|lập trình/.test(txt)) o.logic = (o.logic || 0) + 1;
+      else if (/con người|giao tiếp|chia sẻ|lắng nghe|giúp đỡ|tư vấn/.test(txt)) o.people = (o.people || 0) + 1;
+      else if (/sáng tạo|nghệ thuật|đổi mới|tự do|ý tưởng|thiết kế/.test(txt)) o.creative = (o.creative || 0) + 1;
+      else if (/cẩn thận|kiên nhẫn|kỷ luật|thực tế|chăm chỉ/.test(txt)) o.patient = (o.patient || 0) + 1;
+    }
     return o;
   }, {});
 
@@ -203,12 +230,87 @@ function analyzeCareer() {
     else x.fitLevel = '👍 Khá phù hợp';
   });
 
+  // Xây dựng cơ sở lập luận chi tiết cho từng ngành
   result.forEach(x => {
-    x.reason = `Điểm phù hợp được tham khảo từ ${
-      vals.length
-        ? `điểm ${vals.length} môn (TB ${avg.toFixed(1)})`
-        : 'chưa có dữ liệu điểm'
-    }, sở thích, câu trả lời tính cách và mục tiêu ngành.`;
+    // 1. Phân tích Điểm số & Năng lực học tập
+    const relevantSubjects = [];
+    if (x.name.includes('Công nghệ') || x.name.includes('Khoa học máy tính')) {
+      if (scores['Tin học'] != null) relevantSubjects.push(`Tin học (${scores['Tin học']})`);
+      if (scores['Toán'] != null) relevantSubjects.push(`Toán (${scores['Toán']})`);
+      if (scores['Vật lý'] != null) relevantSubjects.push(`Vật lý (${scores['Vật lý']})`);
+      if (scores['Tiếng Anh'] != null) relevantSubjects.push(`Tiếng Anh (${scores['Tiếng Anh']})`);
+    } else if (x.name.includes('Kinh tế')) {
+      if (scores['Toán'] != null) relevantSubjects.push(`Toán (${scores['Toán']})`);
+      if (scores['Tiếng Anh'] != null) relevantSubjects.push(`Tiếng Anh (${scores['Tiếng Anh']})`);
+      if (scores['Ngữ văn'] != null) relevantSubjects.push(`Ngữ văn (${scores['Ngữ văn']})`);
+    } else if (x.name.includes('Y')) {
+      if (scores['Sinh học'] != null) relevantSubjects.push(`Sinh học (${scores['Sinh học']})`);
+      if (scores['Hóa học'] != null) relevantSubjects.push(`Hóa học (${scores['Hóa học']})`);
+      if (scores['Toán'] != null) relevantSubjects.push(`Toán (${scores['Toán']})`);
+    } else if (x.name.includes('Kỹ thuật')) {
+      if (scores['Toán'] != null) relevantSubjects.push(`Toán (${scores['Toán']})`);
+      if (scores['Vật lý'] != null) relevantSubjects.push(`Vật lý (${scores['Vật lý']})`);
+      if (scores['Hóa học'] != null) relevantSubjects.push(`Hóa học (${scores['Hóa học']})`);
+    } else if (x.name.includes('Luật') || x.name.includes('Truyền')) {
+      if (scores['Ngữ văn'] != null) relevantSubjects.push(`Ngữ văn (${scores['Ngữ văn']})`);
+      if (scores['Tiếng Anh'] != null) relevantSubjects.push(`Tiếng Anh (${scores['Tiếng Anh']})`);
+      if (scores['Lịch sử'] != null) relevantSubjects.push(`Lịch sử (${scores['Lịch sử']})`);
+    } else if (x.name.includes('Sư phạm')) {
+      if (scores['Ngữ văn'] != null) relevantSubjects.push(`Ngữ văn (${scores['Ngữ văn']})`);
+      if (scores['Toán'] != null) relevantSubjects.push(`Toán (${scores['Toán']})`);
+    }
+
+    let academicDetail = '';
+    if (relevantSubjects.length) {
+      academicDetail = `Các môn thế mạnh tương thích: <strong>${relevantSubjects.join(', ')}</strong> (Điểm TB chung: ${vals.length ? avg.toFixed(1) : 'Chưa có'}). Rất phù hợp tổ hợp xét tuyển <strong>${x.bestCombo}</strong>.`;
+    } else if (vals.length) {
+      academicDetail = `Điểm trung bình các môn đã nhập đạt <strong>${avg.toFixed(1)}</strong>. Nhóm ngành này phù hợp xét tuyển các tổ hợp: ${x.combinations.join(', ')}.`;
+    } else {
+      academicDetail = `Bạn chưa nhập điểm môn học cụ thể. Ngành này xét tuyển các tổ hợp: ${x.combinations.join(', ')}.`;
+    }
+
+    // 2. Phân tích MBTI & phong cách tư duy
+    let mbtiDetail = '';
+    if (mbti) {
+      mbtiDetail = `Nhóm tính cách <strong>[${mbti.type}] ${mbti.title}</strong> (${mbti.vietnameseTrait}). ${mbti.desc} Phong cách tư duy và hành động này là ưu thế lớn trong môi trường ${x.name}.`;
+    } else {
+      mbtiDetail = `Dựa trên kết quả trả lời câu hỏi, phong cách tư duy của bạn có xu hướng phù hợp với văn hóa làm việc của ngành ${x.name}.`;
+    }
+
+    // 3. Phân tích Sở thích & Đam mê
+    let hobbyDetail = '';
+    const selectedList = hobbies.selected || [];
+    if (selectedList.length || hobbies.custom) {
+      const allList = [...selectedList];
+      if (hobbies.custom) allList.push(`"${hobbies.custom}"`);
+      hobbyDetail = `Sở thích bạn đã chọn: <strong>${allList.join(', ')}</strong>. Sự say mê tự nhiên này mang lại động lực học tập và nghiên cứu bền bỉ.`;
+    } else {
+      hobbyDetail = 'Bạn chưa chọn danh mục sở thích cụ thể (có thể bổ sung tại bước Sở thích để tăng độ chuẩn xác).';
+    }
+
+    // 4. Phân tích Tiếng nói tự thân (Câu hỏi tự trả lời & Đáp án E)
+    let selfReflectDetail = '';
+    const hasAnyReflect = selfReflect.strengths || selfReflect.idealEnv || selfReflect.vision || customValues.length;
+    if (hasAnyReflect) {
+      const items = [];
+      if (selfReflect.strengths) items.push(`<li><strong>Điểm mạnh tự tin nhất:</strong> "${selfReflect.strengths}"</li>`);
+      if (selfReflect.idealEnv) items.push(`<li><strong>Môi trường làm việc mong muốn:</strong> "${selfReflect.idealEnv}"</li>`);
+      if (selfReflect.vision) items.push(`<li><strong>Mục tiêu & khát vọng đóng góp:</strong> "${selfReflect.vision}"</li>`);
+      if (customValues.length) items.push(`<li><strong>Phương án riêng ở phần trắc nghiệm (Đáp án E):</strong> "${customValues.slice(0, 2).join('; ')}"</li>`);
+      selfReflectDetail = `<ul style="margin:4px 0 0 16px;padding:0;">${items.join('')}</ul>`;
+    } else {
+      selfReflectDetail = 'Bạn chưa điền phần câu hỏi tự bộc lộ (có thể bổ sung tại bước Khám phá tính cách để AI phân tích sâu hơn).';
+    }
+
+    x.evidence = {
+      academic: academicDetail,
+      mbti: mbtiDetail,
+      hobby: hobbyDetail,
+      selfReflect: selfReflectDetail,
+      hasSelfReflect: !!hasAnyReflect
+    };
+
+    x.reason = `Điểm phù hợp được tổng hợp từ: ${relevantSubjects.length ? relevantSubjects.join(', ') : `Điểm TB ${avg.toFixed(1)}`}, nhóm tính cách [${mbti ? mbti.type : 'MBTI'}], sở thích tự nhiên và mục tiêu đã chọn.`;
   });
 
   const displayGoal = goals.dreamMajor
@@ -220,6 +322,7 @@ function analyzeCareer() {
     grade: info.grade,
     goals: goals.selected || [],
     goalText: displayGoal,
+    selfReflect: selfReflect,
     results: result.slice(0, 6)
   };
 }
